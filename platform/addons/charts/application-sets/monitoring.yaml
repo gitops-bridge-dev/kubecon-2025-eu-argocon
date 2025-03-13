@@ -1,0 +1,47 @@
+adot_collector:
+  enableACK: true
+  enabled: true
+  namespace: '{{default "adot-collector-kubeprometheus" (index .metadata.annotations "adot_collector_namespace")}}'
+  defaultVersion: "1.0.0"
+  path: charts/adot-collector
+  selector:
+    matchExpressions:
+      - key: enable_adot_collector
+        operator: In
+        values: ['true']
+  valuesObject:
+    ekscluster: '{{.metadata.annotations.aws_cluster_name}}'
+    accountId: '{{.metadata.annotations.aws_account_id}}'
+    region: '{{.metadata.annotations.aws_region}}'
+    ampurl: '{{.metadata.annotations.amp_endpoint_url}}api/v1/remote_write'
+    serviceAccount: '{{.metadata.annotations.adot_collector_serviceaccount}}'
+amp-prometheus:
+  enabled: true
+  enableACK: true
+  ackPodIdentity:
+    repoURL: "testPath"
+    chart: "chartName"
+    chartVersion: "v1"
+  releaseName: amp-prometheus
+  namespace: '{{default "amp-prometheus" (index .metadata.annotations "amp_prometheus_namespace")}}'
+  chartName: prometheus
+  chartRepository: https://prometheus-community.github.io/helm-charts
+  defaultVersion: "27.3.1"
+  valuesObject:
+    serviceAccounts:
+      server:
+          name: '{{default "amp-prometheus-server-sa" (index .metadata.annotations "amp_prometheus_server_sa")}}'
+          annotations:
+            eks.amazonaws.com/role-arn: '{{default "" (index .metadata.annotations "amp_prometheus_iam_role_arn")}}'
+    server:
+      remoteWrite:
+        -
+          url: '{{.metadata.annotations.amp_endpoint_url}}api/v1/remote_write'
+          sigv4:
+              region: '{{.metadata.annotations.aws_region}}'
+              role_arn: '{{default "" (index .metadata.annotations "amp_prometheus_crossaccount_role")}}'
+  selector:
+    matchExpressions:
+      - key: enable_amp_prometheus
+        operator: In
+        values: ['true']

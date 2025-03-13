@@ -1,0 +1,15 @@
+karpenter-resources:
+  enabled: true
+  chartName: karpenter-resources
+  defaultVersion: "1.0.0"
+  path: 'charts/karpenter-resources'
+  namespace: karpenter-resources
+  selector:
+    matchExpressions:
+      - key: enable_karpenter_resources
+        operator: In
+        values: ['true']
+  valuesObject:
+    nodeClases:
+      role: '{{.metadata.annotations.karpenter_node_iam_role_name}}'
+      clusterName: '{{.metadata.annotations.aws_cluster_name}}'

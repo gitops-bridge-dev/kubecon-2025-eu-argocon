@@ -1,0 +1,25 @@
+apiVersion: argoproj.io/v1alpha1
+kind: Application
+metadata:
+  name: bootstrap
+  namespace: argocd
+spec:
+  destination:
+    namespace: argocd
+    name: "in-cluster"
+  project: default
+  syncPolicy:
+    automated:
+      selfHeal: true
+      prune: true
+  sources:
+  - repoURL: cnoe://
+    ref: values
+  - repoURL: cnoe://
+    path: "addons/charts/application-sets"
+    helm:
+      valuesObject:
+        repoURLGit: cnoe://
+      valueFiles:
+      - $values/addons/clusters/in-cluster/addons/values.yaml
+      - $values/addons/clusters/in-cluster/addons/kube-prometheus-stack.yaml

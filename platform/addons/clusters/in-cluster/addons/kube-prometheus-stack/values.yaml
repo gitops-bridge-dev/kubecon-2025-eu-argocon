@@ -1,0 +1,20 @@
+nodeExporter:
+  enabled: true
+grafana:
+  ingress:
+    enabled: true
+    ingressClassName: nginx
+    hosts:
+      - grafana.cnoe.localtest.me
+prometheus:
+  ingress:
+    enabled: true
+    ingressClassName: nginx
+    hosts:
+      - prometheus.cnoe.localtest.me
+kubeControllerManager:
+  serviceMonitor:
+    insecureSkipVerify: true
+kubeScheduler:
+  serviceMonitor:
+    insecureSkipVerify: true

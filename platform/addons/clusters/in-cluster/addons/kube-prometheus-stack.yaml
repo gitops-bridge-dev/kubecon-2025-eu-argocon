@@ -1,0 +1,7 @@
+kube-prometheus-stack:
+  enabled: true
+  releaseName: kube-prometheus-stack
+  namespace: monitoring
+  chartName: kube-prometheus-stack
+  chartRepository: https://prometheus-community.github.io/helm-charts
+  defaultVersion: "69.8.2"

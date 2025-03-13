@@ -1,0 +1,30 @@
+# File name cluster.yaml
+
+apiVersion: kind.x-k8s.io/v1alpha4
+kind: Cluster
+name: idpbuilder
+kubeadmConfigPatches:
+- |-
+  kind: ClusterConfiguration
+  # configure controller-manager bind address
+  controllerManager:
+    extraArgs:
+      bind-address: 0.0.0.0 #Disable localhost binding
+  # configure etcd metrics listen address
+  etcd:
+    local:
+      extraArgs:
+        listen-metrics-urls: http://0.0.0.0:2381
+  # configure scheduler bind address
+  scheduler:
+    extraArgs:
+      bind-address: 0.0.0.0  #Disable localhost binding
+- |-
+  kind: KubeProxyConfiguration
+  # configure proxy metrics bind address
+  metricsBindAddress: 0.0.0.0
+nodes:
+- role: control-plane
+# - role: worker
+# - role: worker
+# - role: worker
