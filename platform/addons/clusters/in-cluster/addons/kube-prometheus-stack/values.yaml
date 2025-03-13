@@ -1,17 +1,28 @@
-nodeExporter:
-  enabled: true
+# Grafana Config
 grafana:
   ingress:
     enabled: true
     ingressClassName: nginx
     hosts:
-      - grafana.cnoe.localtest.me
+      - cnoe.localtest.me
+    path: /grafana
+  grafana.ini:
+    server:
+      root_url: https://cnoe.localtest.me:8443/grafana
+      serve_from_sub_path: true
+
+# Prometheus Config
 prometheus:
   ingress:
     enabled: true
     ingressClassName: nginx
     hosts:
-      - prometheus.cnoe.localtest.me
+      - cnoe.localtest.me
+    paths:
+    - /prometheus
+  prometheusSpec:
+    externalUrl: https://cnoe.localtest.me:8443/prometheus
+    routePrefix: /prometheus
 kubeControllerManager:
   serviceMonitor:
     insecureSkipVerify: true
