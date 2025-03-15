@@ -48,26 +48,3 @@ EOF
 
 done
 
-# Add In-Cluster
-kubectl apply -f - <<EOF
-apiVersion: v1
-kind: Secret
-metadata:
-  name: control-plane
-  namespace: argocd
-  labels:
-    argocd.argoproj.io/secret-type: cluster
-    clusterClass: "control-plane"
-    clusterName: "in-cluster"
-    environment: "control-plane"
-type: Opaque
-stringData:
-  name: in-cluster
-  server: https://kubernetes.default.svc
-  config: |
-    {
-      "tlsClientConfig": {
-        "insecure": false
-      }
-    }
-EOF

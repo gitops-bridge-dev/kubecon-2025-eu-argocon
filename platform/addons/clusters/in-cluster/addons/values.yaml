@@ -1,3 +1,28 @@
+kube-prometheus-stack:
+  enabled: true
+  releaseName: kube-prometheus-stack
+  namespace: monitoring
+  chartName: kube-prometheus-stack
+  chartRepository: https://prometheus-community.github.io/helm-charts
+  defaultVersion: "69.8.2"
+
+external-secrets:
+  enabled: true
+  releaseName: external-secrets
+  namespace: external-secrets
+  chartName: external-secrets
+  chartRepository: https://charts.external-secrets.io
+  defaultVersion: "0.10.3"
+
+
+
+
+
+
+
+
+# default for in-cluster
+
 useValuesFilePrefix: false
 repoURLGitRevision: HEAD
 repoURLGitBasePath: "addons"

@@ -7,7 +7,7 @@
 
 Deploy clusters:
 ```shell
-idpbuilder create --kind-config kind-config.yaml -p vcluster-multi-env -p platform --use-path-routing
+idpbuilder create --kind-config kind-config.yaml -c argocd:argocd/in-cluster.yaml --use-path-routing -p vcluster-multi-env -p platform
 ```
 
 Register clusters:
