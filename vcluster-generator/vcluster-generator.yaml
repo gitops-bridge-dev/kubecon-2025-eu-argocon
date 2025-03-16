@@ -1,0 +1,25 @@
+apiVersion: argoproj.io/v1alpha1
+kind: Application
+metadata:
+  name: vcluster-generator
+  namespace: argocd
+spec:
+  project: default
+  source:
+    repoURL: cnoe://
+    targetRevision: HEAD
+    path: vclusters
+    helm:
+      valuesObject:
+        generateAllCombinations: false
+        maxConfigmaps: 1
+        externalSecretsVcluster:
+          repoURL: cnoe://
+
+  destination:
+    server: https://kubernetes.default.svc
+    namespace: default
+  syncPolicy:
+    automated: {}
+    syncOptions:
+    - CreateNamespace=true

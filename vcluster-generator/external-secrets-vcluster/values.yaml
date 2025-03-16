@@ -1,4 +1,5 @@
 clusterName: cluster-1
-environment: staging
 server: https://staging-vcluster.cnoe.localtest.me:443
 secretName: vc-staging-vcluster-helm
+labels:
+  environment: staging
