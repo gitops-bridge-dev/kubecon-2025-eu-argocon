@@ -31,7 +31,7 @@ possibleValues:
 generateAllCombinations: false
 
 # Optional: Maximum number of configmaps to generate if generateAllCombinations is false
-maxClusters: 2
+maxConfigmaps: 2
 
 # Group assignment pattern:
 # - Groups are named as "{environment}-{letter}"
