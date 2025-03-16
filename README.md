@@ -10,12 +10,6 @@ Deploy clusters:
 idpbuilder create --kind-config kind-config.yaml -c argocd:argocd/in-cluster.yaml --use-path-routing -p platform -p vcluster-generator
 ```
 
-Register clusters:
-```shell
-./vcluster-multi-env/add-vclusters.sh
-```
-
-
 ## Web UIs
 - ArgoCD: https://cnoe.localtest.me:8443/argocd
 - Gitea: https://cnoe.localtest.me:8443/gitea
