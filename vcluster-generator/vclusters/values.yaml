@@ -1,0 +1,61 @@
+# Values for configmap generation
+# All possible combinations of these values will be used to create configmaps
+
+possibleValues:
+  environments:
+    - ci
+    - staging
+    - production
+
+  regions:
+    - us-east-1
+    - us-west-2
+    - eu-west-2
+
+
+  versions:
+    - "v1.32.0"
+    - "v1.30.10"
+    - "v1.31.6"
+
+
+  organizations:
+    - team-1
+    - team-2
+    - team-3
+    - team-4
+    - team-5
+
+# Optional: Set to false if you want to limit the number of generated configmaps
+# Otherwise, all combinations will be created (environments × regions × versions × organizations)
+generateAllCombinations: false
+
+# Optional: Maximum number of configmaps to generate if generateAllCombinations is false
+maxConfigmaps: 2
+
+# Group assignment pattern:
+# - Groups are named as "{environment}-{letter}"
+# - Each group can contain a maximum of 2 clusters
+# - The letters progress alphabetically (a, b, c, d, ...) when new groups are needed
+# - Example: for environment "development" with many clusters:
+#   - First 2 clusters: "development-a"
+#   - Next 2 clusters: "development-b"
+#   - Next 2 clusters: "development-c"
+#   - And so on...
+
+argocd:
+  namespace: argocd
+  project: default
+  destination:
+    server: https://kubernetes.default.svc
+    namespace: cluster-test
+
+externalSecretsVcluster:
+  repoURL: cnoe://
+  targetRevision: HEAD
+  path: external-secrets-vcluster
+
+
+vcluster:
+  repoURL: https://charts.loft.sh
+  targetRevision: "0.23.0"

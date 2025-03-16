@@ -1,0 +1,126 @@
+{{- $root := . -}}
+
+{{- /* Calculate the total number of combinations */ -}}
+{{- $totalCombinations := mul (len .Values.possibleValues.environments) (len .Values.possibleValues.regions) (len .Values.possibleValues.versions) (len .Values.possibleValues.organizations) -}}
+
+{{- /* Determine how many configmaps to generate */ -}}
+{{- $configmapsToGenerate := $totalCombinations -}}
+{{- if not .Values.generateAllCombinations -}}
+  {{- $configmapsToGenerate = min $totalCombinations .Values.maxClusters -}}
+{{- end -}}
+
+{{- /* Create a list of letters for group naming */ -}}
+{{- $letters := list "a" "b" "c" "d" "e" "f" "g" "h" "i" "j" "k" "l" "m" "n" "o" "p" "q" "r" "s" "t" "u" "v" "w" "x" "y" "z" -}}
+
+{{- /* Create a map to track the count of clusters for each environment-version group */ -}}
+{{- $groupCounts := dict -}}
+
+{{- /* Track current index */ -}}
+{{- $globalIndex := 0 -}}
+
+{{- /* Generate nested loops for all combinations */ -}}
+{{- range $envIndex, $env := .Values.possibleValues.environments -}}
+  {{- range $regionIndex, $region := $root.Values.possibleValues.regions -}}
+    {{- range $versionIndex, $version := $root.Values.possibleValues.versions -}}
+      {{- range $orgIndex, $org := $root.Values.possibleValues.organizations -}}
+        {{- /* Only generate if within the limit */ -}}
+        {{- if lt $globalIndex $configmapsToGenerate -}}
+
+          {{- /* Create a key for this environment-version combination */ -}}
+          {{- $baseKey := printf "%s-%s" $env $version -}}
+
+          {{- /* Initialize counter if it doesn't exist */ -}}
+          {{- if not (hasKey $groupCounts $baseKey) -}}
+            {{- $_ := set $groupCounts $baseKey 0 -}}
+          {{- end -}}
+
+          {{- /* Get the current count for this environment-version group */ -}}
+          {{- $currentCount := get $groupCounts $baseKey -}}
+
+          {{- /* Calculate letter index (which increments after every 2 clusters) */ -}}
+          {{- $letterIndex := div $currentCount 2 -}}
+          {{- /* Get the actual letter to use */ -}}
+          {{- $groupLetter := index $letters $letterIndex -}}
+
+          {{- /* Create final group name */ -}}
+          {{- $groupName := printf "%s-%s" $env $groupLetter -}}
+
+          {{- /* Increment the counter in the map */ -}}
+          {{- $_ := set $groupCounts $baseKey (add $currentCount 1) }}
+---
+apiVersion: argoproj.io/v1alpha1
+kind: Application
+metadata:
+  name: cluster-{{ $globalIndex }}
+  namespace: {{ $root.Values.argocd.namespace }}
+  labels:
+    cnoe.io/stackName: vcluster-generator
+    cnoe.io/applicationName: argocon2025
+spec:
+  project: {{ $root.Values.argocd.project }}
+  sources:
+    - chart: vcluster
+      repoURL: {{ $root.Values.vcluster.repoURL }}
+      targetRevision: {{ $root.Values.vcluster.targetRevision }}
+      helm:
+        valuesObject:
+          sync:
+            fromHost:
+              nodes:
+                enabled: true # Required for virtualScheduler
+          controlPlane:
+            distro:
+              k8s:
+                enabled: true
+                version: {{ $version }}
+            advanced:
+              virtualScheduler: # For Keptn support: https://keptn.sh/stable/docs/installation/configuration/vcluster/
+                enabled: true
+            proxy:
+              extraSANs:
+              - cluster-{{ $globalIndex }}.cnoe.localtest.me
+            statefulSet:
+              scheduling:
+                podManagementPolicy: OrderedReady
+            ingress:
+              enabled: true
+              host: cluster-{{ $globalIndex }}.cnoe.localtest.me
+              spec:
+                ingressClassName: nginx
+          exportKubeConfig:
+            server: https://cluster-{{ $globalIndex }}.cnoe.localtest.me:443
+    - repoURL: {{ $root.Values.externalSecretsVcluster.repoURL }}
+      targetRevision: {{ $root.Values.externalSecretsVcluster.targetRevision }}
+      path: {{ $root.Values.externalSecretsVcluster.path }}
+      helm:
+        valuesObject:
+          clusterName: cluster-{{ $globalIndex }}
+          secretName: vc-cluster-{{ $globalIndex }}
+          server: https://cluster-{{ $globalIndex }}.cnoe.localtest.me:443
+          labels:
+            environment: {{ $env }}
+            region: {{ $region }}
+            version: {{ $version }}
+            organization: {{ $org }}
+            group: {{ $groupName }}
+            # Generate a unique identifier for each combination
+            combinationId: "{{ $envIndex }}-{{ $regionIndex }}-{{ $versionIndex }}-{{ $orgIndex }}"
+            combinationName: "{{ $env }}-{{ $region }}-{{ $version | replace "." "-" }}-{{ $org }}"
+            versionLetter: {{ $groupLetter }}
+            clusterCountInVersion: {{ $currentCount | quote }}
+            letterIndex: {{ $letterIndex | quote }}
+  destination:
+    namespace:  cluster-{{ $globalIndex }}
+    server: {{ $root.Values.argocd.destination.server }}
+  syncPolicy:
+    automated: {}
+    syncOptions:
+    - CreateNamespace=true
+
+
+          {{- $globalIndex = add $globalIndex 1 -}}
+        {{- end -}}
+      {{- end -}}
+    {{- end -}}
+  {{- end -}}
+{{- end -}}

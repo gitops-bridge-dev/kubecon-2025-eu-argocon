@@ -22,4 +22,3 @@ spec:
         repoURLGit: cnoe://
       valueFiles:
       - $values/addons/clusters/in-cluster/addons/values.yaml
-      - $values/addons/clusters/in-cluster/addons/kube-prometheus-stack.yaml
