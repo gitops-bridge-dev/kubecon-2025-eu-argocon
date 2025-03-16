@@ -2,36 +2,45 @@
 # All possible combinations of these values will be used to create configmaps
 
 possibleValues:
-  environments:
-    - ci
-    - staging
-    - production
+  clouds:
+    - aws
+    - azure
+    - gcp
 
   regions:
     - us-east-1
     - us-west-2
     - eu-west-2
 
+  environments:
+    - ci
+    - staging
+    - production
 
   versions:
     - "v1.32.0"
-    - "v1.30.10"
     - "v1.31.6"
-
 
   organizations:
     - team-1
     - team-2
     - team-3
-    - team-4
-    - team-5
+
+extraLabels:
+  gpuEnabled: 'true'
+
+extraAnnotations:
+  accountId: '123456789012'
+  vpcId: 'XXXXXXXXXXXXXXXXXXXXX'
+  # optional flag to explicitly disable arm64 nodeSelectors
+  # arm64Enabled: 'false'
 
 # Optional: Set to false if you want to limit the number of generated configmaps
 # Otherwise, all combinations will be created (environments × regions × versions × organizations)
 generateAllCombinations: false
 
 # Optional: Maximum number of configmaps to generate if generateAllCombinations is false
-maxConfigmaps: 2
+maxClusters: 2
 
 # Group assignment pattern:
 # - Groups are named as "{environment}-{letter}"
