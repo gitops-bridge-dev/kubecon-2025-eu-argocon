@@ -1,7 +1,7 @@
 {{- $root := . -}}
 
 {{- /* Calculate the total number of combinations */ -}}
-{{- $totalCombinations := mul (len .Values.possibleValues.environments) (len .Values.possibleValues.regions) (len .Values.possibleValues.versions) (len .Values.possibleValues.organizations) -}}
+{{- $totalCombinations := mul (len .Values.possibleValues.organizations) (len .Values.possibleValues.clouds) (len .Values.possibleValues.regions) (len .Values.possibleValues.environments) (len .Values.possibleValues.versions) -}}
 
 {{- /* Determine how many configmaps to generate */ -}}
 {{- $configmapsToGenerate := $totalCombinations -}}
@@ -19,34 +19,35 @@
 {{- $globalIndex := 0 -}}
 
 {{- /* Generate nested loops for all combinations */ -}}
-{{- range $envIndex, $env := .Values.possibleValues.environments -}}
-  {{- range $regionIndex, $region := $root.Values.possibleValues.regions -}}
-    {{- range $versionIndex, $version := $root.Values.possibleValues.versions -}}
-      {{- range $orgIndex, $org := $root.Values.possibleValues.organizations -}}
-        {{- /* Only generate if within the limit */ -}}
-        {{- if lt $globalIndex $configmapsToGenerate -}}
+{{- range $orgIndex, $org := .Values.possibleValues.organizations -}}
+  {{- range $cloudIndex, $cloud := $root.Values.possibleValues.clouds -}}
+    {{- range $regionIndex, $region := $root.Values.possibleValues.regions -}}
+      {{- range $envIndex, $env := $root.Values.possibleValues.environments -}}
+        {{- range $versionIndex, $version := $root.Values.possibleValues.versions -}}
+          {{- /* Only generate if within the limit */ -}}
+          {{- if lt $globalIndex $configmapsToGenerate -}}
 
-          {{- /* Create a key for this environment-version combination */ -}}
-          {{- $baseKey := printf "%s-%s" $env $version -}}
+            {{- /* Create a key for this environment-version combination */ -}}
+            {{- $baseKey := printf "%s-%s" $env $version -}}
 
-          {{- /* Initialize counter if it doesn't exist */ -}}
-          {{- if not (hasKey $groupCounts $baseKey) -}}
-            {{- $_ := set $groupCounts $baseKey 0 -}}
-          {{- end -}}
+            {{- /* Initialize counter if it doesn't exist */ -}}
+            {{- if not (hasKey $groupCounts $baseKey) -}}
+              {{- $_ := set $groupCounts $baseKey 0 -}}
+            {{- end -}}
 
-          {{- /* Get the current count for this environment-version group */ -}}
-          {{- $currentCount := get $groupCounts $baseKey -}}
+            {{- /* Get the current count for this environment-version group */ -}}
+            {{- $currentCount := get $groupCounts $baseKey -}}
 
-          {{- /* Calculate letter index (which increments after every 2 clusters) */ -}}
-          {{- $letterIndex := div $currentCount 2 -}}
-          {{- /* Get the actual letter to use */ -}}
-          {{- $groupLetter := index $letters $letterIndex -}}
+            {{- /* Calculate letter index (which increments after every 2 clusters) */ -}}
+            {{- $letterIndex := div $currentCount 2 -}}
+            {{- /* Get the actual letter to use */ -}}
+            {{- $groupLetter := index $letters $letterIndex -}}
 
-          {{- /* Create final group name */ -}}
-          {{- $groupName := printf "%s-%s" $env $groupLetter -}}
+            {{- /* Create final group name */ -}}
+            {{- $groupName := printf "%s-%s" $env $groupLetter -}}
 
-          {{- /* Increment the counter in the map */ -}}
-          {{- $_ := set $groupCounts $baseKey (add $currentCount 1) }}
+            {{- /* Increment the counter in the map */ -}}
+            {{- $_ := set $groupCounts $baseKey (add $currentCount 1) }}
 ---
 apiVersion: argoproj.io/v1alpha1
 kind: Application
@@ -54,8 +55,44 @@ metadata:
   name: cluster-{{ $globalIndex }}
   namespace: {{ $root.Values.argocd.namespace }}
   labels:
-    cnoe.io/stackName: vcluster-generator
-    cnoe.io/applicationName: argocon2025
+    clusterName: cluster-{{ $globalIndex }}
+    workload: 'true'
+    organization: {{ $org }}
+    org: {{ $org }}
+    cloud: {{ $cloud }}
+    {{- if eq $cloud "aws" }}
+    provider: eks
+    karpenterEnabled: 'true'
+    {{- end }}
+    {{- if eq $cloud "azure" }}
+    provider: aks
+    {{- end }}
+    {{- if eq $cloud "gcp" }}
+    provider: gke
+    {{- end }}
+    region: {{ $region }}
+    location: {{ $region }}
+    environment: {{ $env }}
+    version: {{ $version }}
+    group: {{ $groupName }}
+    maintenanceGroup: {{ $groupName }}
+    # add extra labels from values.yaml
+    {{- range $key, $value := $root.Values.extraLabels }}
+    {{ $key }}: {{ $value | quote }}
+    {{- end }}
+  annotations:
+    # add extra annotations from values.yaml
+    {{- range $key, $value := $root.Values.extraAnnotations }}
+    {{ $key }}: {{ $value | quote }}
+    {{- end }}
+    clusterName: cluster-{{ $globalIndex }}
+    region: {{ $region }}
+    # Generate a unique identifier for each combination
+    combinationId: "{{ $orgIndex }}-{{ $cloudIndex }}-{{ $regionIndex }}-{{ $envIndex }}-{{ $versionIndex }}"
+    combinationName: "{{ $org }}-{{ $cloud }}-{{ $region }}-{{ $env }}-{{ $version | replace "." "-" }}"
+    versionLetter: {{ $groupLetter }}
+    clusterCountInVersion: {{ $currentCount | quote }}
+    letterIndex: {{ $letterIndex | quote }}
 spec:
   project: {{ $root.Values.argocd.project }}
   sources:
@@ -98,14 +135,41 @@ spec:
           secretName: vc-cluster-{{ $globalIndex }}
           server: https://cluster-{{ $globalIndex }}.cnoe.localtest.me:443
           labels:
-            environment: {{ $env }}
-            region: {{ $region }}
-            version: {{ $version }}
+            clusterName: cluster-{{ $globalIndex }}
+            workload: 'true'
             organization: {{ $org }}
+            org: {{ $org }}
+            cloud: {{ $cloud }}
+            {{- if eq $cloud "aws" }}
+            provider: eks
+            karpenterEnabled: 'true'
+            {{- end }}
+            {{- if eq $cloud "azure" }}
+            provider: aks
+            {{- end }}
+            {{- if eq $cloud "gcp" }}
+            provider: gke
+            {{- end }}
+            region: {{ $region }}
+            location: {{ $region }}
+            environment: {{ $env }}
+            version: {{ $version }}
             group: {{ $groupName }}
+            maintenanceGroup: {{ $groupName }}
+            # add extra labels from values.yaml
+            {{- range $key, $value := $root.Values.extraLabels }}
+            {{ $key }}: {{ $value | quote }}
+            {{- end }}
+          annotations:
+            # add extra annotations from values.yaml
+            {{- range $key, $value := $root.Values.extraAnnotations }}
+            {{ $key }}: {{ $value | quote }}
+            {{- end }}
+            clusterName: cluster-{{ $globalIndex }}
+            region: {{ $region }}
             # Generate a unique identifier for each combination
-            combinationId: "{{ $envIndex }}-{{ $regionIndex }}-{{ $versionIndex }}-{{ $orgIndex }}"
-            combinationName: "{{ $env }}-{{ $region }}-{{ $version | replace "." "-" }}-{{ $org }}"
+            combinationId: "{{ $orgIndex }}-{{ $cloudIndex }}-{{ $regionIndex }}-{{ $envIndex }}-{{ $versionIndex }}"
+            combinationName: "{{ $org }}-{{ $cloud }}-{{ $region }}-{{ $env }}-{{ $version | replace "." "-" }}"
             versionLetter: {{ $groupLetter }}
             clusterCountInVersion: {{ $currentCount | quote }}
             letterIndex: {{ $letterIndex | quote }}
@@ -117,8 +181,8 @@ spec:
     syncOptions:
     - CreateNamespace=true
 
-
-          {{- $globalIndex = add $globalIndex 1 -}}
+            {{- $globalIndex = add $globalIndex 1 -}}
+          {{- end -}}
         {{- end -}}
       {{- end -}}
     {{- end -}}

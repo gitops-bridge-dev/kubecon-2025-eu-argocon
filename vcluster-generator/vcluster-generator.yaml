@@ -12,7 +12,7 @@ spec:
     helm:
       valuesObject:
         generateAllCombinations: false
-        maxClusters: 10
+        maxClusters: 4
         externalSecretsVcluster:
           repoURL: cnoe://
 
