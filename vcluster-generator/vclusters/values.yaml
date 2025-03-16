@@ -28,6 +28,8 @@ possibleValues:
 
 extraLabels:
   gpuEnabled: 'true'
+  clusterType: 'vcluster'
+  workload: 'true'
 
 extraAnnotations:
   accountId: '123456789012'

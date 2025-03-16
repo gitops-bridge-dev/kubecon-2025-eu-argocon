@@ -1,0 +1,16 @@
+
+# default for all clusters
+
+useValuesFilePrefix: false
+repoURLGitRevision: HEAD
+repoURLGitBasePath: 'addons'
+# only deploy apps to the control-plane environment
+globalSelectors:
+  clusterType: 'vcluster'
+syncPolicy:
+  automated:
+    selfHeal: false
+    allowEmpty: true
+    prune: false
+syncPolicyAppSet:
+    preserveResourcesOnDeletion: false

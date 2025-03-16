@@ -31,10 +31,10 @@ Template to generate additional resources configuration
     {{- end }}
     ignoreMissingValueFiles: true
     valueFiles:
-    {{- include "application-sets.valueFiles" (dict 
-      "nameNormalize" $chartName 
-      "valueFiles" $valueFiles 
-      "values" $values 
+    {{- include "application-sets.valueFiles" (dict
+      "nameNormalize" $chartName
+      "valueFiles" $valueFiles
+      "values" $values
       "chartType" $additionalResourcesType) | nindent 6 }}
 {{- end }}
 {{- end }}
@@ -52,7 +52,9 @@ Define the values path for reusability
 {{- with .valueFiles }}
 {{- range . }}
 - $values/{{ $values.repoURLGitBasePath }}/{{ . }}/{{ $nameNormalize }}{{ if $chartType }}/{{ $chartType }}{{ end }}/{{ if $chartConfig.valuesFileName }}{{ $chartConfig.valuesFileName }}{{ else }}values.yaml{{ end }}
+{{- if $values.useValuesFilePrefix }}
 - $values/{{ $values.repoURLGitBasePath }}/{{ if $values.useValuesFilePrefix }}{{ $values.valuesFilePrefix }}{{ end }}{{ . }}/{{ $nameNormalize }}{{ if $chartType }}/{{ $chartType }}{{ end }}/{{ if $chartConfig.valuesFileName }}{{ $chartConfig.valuesFileName }}{{ else }}values.yaml{{ end }}
+{{- end }}
 {{- end }}
 {{- end }}
 {{- end }}

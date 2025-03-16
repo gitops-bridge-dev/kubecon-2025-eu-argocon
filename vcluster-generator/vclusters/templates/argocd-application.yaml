@@ -44,7 +44,8 @@
             {{- $groupLetter := index $letters $letterIndex -}}
 
             {{- /* Create final group name */ -}}
-            {{- $groupName := printf "%s-%s" $env $groupLetter -}}
+            {{- $groupName := printf "%s" $groupLetter -}}
+            {{- $groupNameEnv := printf "%s-%s" $env $groupLetter -}}
 
             {{- /* Increment the counter in the map */ -}}
             {{- $_ := set $groupCounts $baseKey (add $currentCount 1) }}
@@ -56,7 +57,6 @@ metadata:
   namespace: {{ $root.Values.argocd.namespace }}
   labels:
     clusterName: cluster-{{ $globalIndex }}
-    workload: 'true'
     organization: {{ $org }}
     org: {{ $org }}
     cloud: {{ $cloud }}
@@ -73,8 +73,8 @@ metadata:
     region: {{ $region }}
     location: {{ $region }}
     environment: {{ $env }}
-    version: {{ $version }}
-    group: {{ $groupName }}
+    kubernetesVersion: {{ $version }}
+    group: {{ $groupNameEnv }}
     maintenanceGroup: {{ $groupName }}
     # add extra labels from values.yaml
     {{- range $key, $value := $root.Values.extraLabels }}
@@ -136,7 +136,6 @@ spec:
           server: https://cluster-{{ $globalIndex }}.cnoe.localtest.me:443
           labels:
             clusterName: cluster-{{ $globalIndex }}
-            workload: 'true'
             organization: {{ $org }}
             org: {{ $org }}
             cloud: {{ $cloud }}
@@ -153,8 +152,8 @@ spec:
             region: {{ $region }}
             location: {{ $region }}
             environment: {{ $env }}
-            version: {{ $version }}
-            group: {{ $groupName }}
+            kubernetesVersion: {{ $version }}
+            group: {{ $groupNameEnv }}
             maintenanceGroup: {{ $groupName }}
             # add extra labels from values.yaml
             {{- range $key, $value := $root.Values.extraLabels }}

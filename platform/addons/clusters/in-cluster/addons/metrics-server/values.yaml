@@ -1,0 +1,2 @@
+args:
+- "--kubelet-insecure-tls" # this is only required in kind cluster https://gist.github.com/sanketsudake/a089e691286bf2189bfedf295222bd43

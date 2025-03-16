@@ -1,0 +1,13 @@
+useValuesFilePrefix: false
+repoURLGitRevision: HEAD
+repoURLGitBasePath: "addons"
+# only deploy apps to the control-plane environment
+globalSelectors:
+  environment: "control-plane"
+syncPolicy:
+  automated:
+    selfHeal: false
+    allowEmpty: true
+    prune: true
+syncPolicyAppSet:
+    preserveResourcesOnDeletion: false
