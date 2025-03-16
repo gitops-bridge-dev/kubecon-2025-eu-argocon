@@ -6,7 +6,7 @@
 {{- /* Determine how many configmaps to generate */ -}}
 {{- $configmapsToGenerate := $totalCombinations -}}
 {{- if not .Values.generateAllCombinations -}}
-  {{- $configmapsToGenerate = min $totalCombinations .Values.maxConfigmaps -}}
+  {{- $configmapsToGenerate = min $totalCombinations .Values.maxClusters -}}
 {{- end -}}
 
 {{- /* Create a list of letters for group naming */ -}}
