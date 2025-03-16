@@ -32,7 +32,7 @@ idpbuilder get secrets
 ## Watch mode
 As you make changes to yaml files they can be auto sync to gitea run with `--no-exit`
 ```shell
-idpbuilder create -p vcluster-multi-env -p platform --no-exit
+idpbuilder create --kind-config kind-config.yaml -c argocd:argocd/in-cluster.yaml --use-path-routing -p platform -p vcluster-generator --no-exit
 ```
 
 ## Clean

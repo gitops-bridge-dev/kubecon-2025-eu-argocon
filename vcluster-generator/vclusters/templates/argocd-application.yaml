@@ -82,6 +82,11 @@ spec:
             statefulSet:
               scheduling:
                 podManagementPolicy: OrderedReady
+            ingress:
+              enabled: true
+              host: cluster-{{ $globalIndex }}.cnoe.localtest.me
+              spec:
+                ingressClassName: nginx
           exportKubeConfig:
             server: https://cluster-{{ $globalIndex }}.cnoe.localtest.me:443
     - repoURL: {{ $root.Values.externalSecretsVcluster.repoURL }}
@@ -111,35 +116,7 @@ spec:
     automated: {}
     syncOptions:
     - CreateNamespace=true
----
-apiVersion: networking.k8s.io/v1
-kind: Ingress
-metadata:
-  annotations:
-    # We need the ingress to pass through ssl traffic to the vCluster
-    # This only works for the nginx-ingress (enable via --enable-ssl-passthrough
-    # https://kubernetes.github.io/ingress-nginx/user-guide/tls/#ssl-passthrough )
-    # for other ingress controllers please check their respective documentation.
-    nginx.ingress.kubernetes.io/backend-protocol: HTTPS
-    nginx.ingress.kubernetes.io/ssl-passthrough: "true"
-    nginx.ingress.kubernetes.io/ssl-redirect: "true"
-  name: vcluster-ingress
-  namespace:  cluster-{{ $globalIndex }}
-  labels:
-    cnoe.io/stackName: vcluster-generator
-spec:
-  ingressClassName: nginx # use your ingress class name
-  rules:
-  - host: cluster-{{ $globalIndex }}.cnoe.localtest.me
-    http:
-      paths:
-      - backend:
-          service:
-            name: cluster-{{ $globalIndex }}
-            port:
-              number: 443
-        path: /
-        pathType: ImplementationSpecific
+
 
           {{- $globalIndex = add $globalIndex 1 -}}
         {{- end -}}
