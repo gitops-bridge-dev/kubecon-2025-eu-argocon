@@ -1,0 +1,35 @@
+Thank you for installing {{ .Chart.Name }}.
+
+This chart has deployed:
+1. A ConfigMap named "{{ .Values.configMap.name }}"
+2. A Job named "{{ .Values.job.name }}" with conditional behavior
+
+Current configuration:
+- Current namespace: {{ .Release.Namespace }}
+- Magic Word 1: {{ .Values.magicWord1 }}
+- Magic Word 2: {{ .Values.magicWord2 }}
+
+Job behavior:
+{{- if eq .Values.magicWord1 .Values.magicWord2 }}
+{{- if ne .Values.magicWord1 "" }}
+- Magic words match! ({{ .Values.magicWord1 }})
+- The job will NEVER complete
+- ArgoCD will stay in "Progressing" state
+{{- else }}
+- Magic words match but are empty, job will complete normally
+- ArgoCD should reach "Synced" state
+{{- end }}
+{{- else }}
+- Magic words don't match
+- The job will complete normally
+- ArgoCD should reach "Synced" state
+{{- end }}
+
+To check the status of the job:
+  kubectl get jobs {{ .Values.job.name }} -n {{ .Release.Namespace }}
+
+To see the job logs:
+  kubectl logs job/{{ .Values.job.name }} -n {{ .Release.Namespace }}
+
+To manually delete the job when you're done with the demo:
+  kubectl delete job {{ .Values.job.name }} -n {{ .Release.Namespace }}
