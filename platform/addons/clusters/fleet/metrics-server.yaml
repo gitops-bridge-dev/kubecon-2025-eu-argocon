@@ -1,0 +1,31 @@
+metrics-server:
+  enabled: true
+  releaseName: metrics-server
+  namespace: kube-system
+  chartName: metrics-server
+  chartRepository: https://kubernetes-sigs.github.io/metrics-server
+  defaultVersion: "3.12.0"
+  environments:
+  - selector:
+      environment: ci
+    chartVersion: "3.12.2"
+  - selector:
+      environment: staging
+      maintenanceGroup: a
+    chartVersion: "3.12.1"
+  - selector:
+      environment: staging
+      maintenanceGroup: b
+    chartVersion: "3.12.1"
+  - selector:
+      environment: production
+      maintenanceGroup: canary
+    chartVersion: "3.12.0"
+  - selector:
+      environment: production
+      maintenanceGroup: a
+    chartVersion: "3.12.0"
+  - selector:
+      environment: production
+      maintenanceGroup: b
+    chartVersion: "3.12.0"

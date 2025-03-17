@@ -26,3 +26,4 @@ useValuesFilePrefix: true
 valuesFilePrefix: '{{.metadata.labels.tenant}}/'
 ackPodIdentity:
   path: "charts/pod-identity"
+#appsetPrefix: "appset-"

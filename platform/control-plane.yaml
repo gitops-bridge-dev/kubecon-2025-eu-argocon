@@ -20,6 +20,7 @@ spec:
     helm:
       valuesObject:
         repoURLGit: cnoe://
+        appsetPrefix: "in-cluster-"
       valueFiles:
       - $values/addons/clusters/in-cluster/common.yaml
       - $values/addons/clusters/in-cluster/external-secrets.yaml

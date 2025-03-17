@@ -29,7 +29,22 @@ As you make changes to yaml files they can be auto sync to gitea run with `--no-
 idpbuilder create --kind-config kind-config.yaml -c argocd:argocd/in-cluster.yaml --use-path-routing -p platform -p vcluster-generator --no-exit
 ```
 
+## Using vcluster
+
+Connect to a cluster
+```shell
+vlcuster connect cluster-0
+```
+
+Disconnect from cluster
+```shell
+vcluster disconnect
+```
+
+
 ## Clean
 ```shell
 kind delete cluster --name localdev
 ```
+
+

@@ -1,5 +1,5 @@
 
-# default for all clusters
+# default for all vclusters
 
 useValuesFilePrefix: false
 repoURLGitRevision: HEAD
