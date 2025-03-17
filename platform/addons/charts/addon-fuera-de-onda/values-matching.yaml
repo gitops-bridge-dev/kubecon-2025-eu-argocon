@@ -1,0 +1,48 @@
+# Default values for fuera-de-onda.
+# This is a YAML-formatted file.
+
+# Name of the ConfigMap to be created
+configMapName: funny-configmap
+
+# Namespace where the ConfigMap will be created
+# If not specified, the release namespace will be used
+namespace: ""
+
+# Funny message to be included in the ConfigMap
+funnyMessage: "Why don't scientists trust atoms? Because they make up everything!"
+
+argocdApp: "fuera-de-onda" # Name of the ArgoCD application
+# Annotations to be added to the ConfigMap
+annotations:
+  argocd.argoproj.io/tracking-id: "{{ .Values.argocdApp}}:/ConfigMap:{{ .Release.Namespace }}/{{ .Values.configMapName }}"
+  created-by: "fuera-de-onda-helm-chart"
+  purpose: "Just for fun"
+
+# Magic words that is they match the annotations are added to the ConfigMap
+magicWord1: "match-me"
+magicWord2: "match-me"
+
+# Job configuration
+job:
+  # Service account for the job
+  serviceAccount:
+    # Name of the service account to use
+    # If not set and create is true, a name is generated using the fullname template
+    name: ""
+    # Whether to create a service account
+    create: true
+
+  # Job image configuration
+  image:
+    repository: bitnami/kubectl
+    tag: latest
+    pullPolicy: IfNotPresent
+
+  # Job resources
+  resources:
+    limits:
+      cpu: 100m
+      memory: 128Mi
+    requests:
+      cpu: 50m
+      memory: 64Mi

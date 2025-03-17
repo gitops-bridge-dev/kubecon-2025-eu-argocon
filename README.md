@@ -33,7 +33,7 @@ idpbuilder create --kind-config kind-config.yaml -c argocd:argocd/in-cluster.yam
 
 Connect to a cluster
 ```shell
-vlcuster connect cluster-0
+vcluster connect cluster-0
 ```
 
 Disconnect from cluster

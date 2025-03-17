@@ -1,0 +1,13 @@
+Thank you for installing {{ .Chart.Name }}.
+
+The job has been created and will create a ConfigMap named "{{ .Values.configMapName }}" 
+in the namespace "{{ default .Release.Namespace .Values.namespace }}".
+
+To check the status of the job:
+  kubectl get jobs -n {{ .Release.Namespace }} {{ include "fuera-de-onda.fullname" . }}
+
+To check if the ConfigMap was created:
+  kubectl get configmap -n {{ default .Release.Namespace .Values.namespace }} {{ .Values.configMapName }}
+
+To see the funny message in the ConfigMap:
+  kubectl get configmap -n {{ default .Release.Namespace .Values.namespace }} {{ .Values.configMapName }} -o jsonpath='{.data.message}'

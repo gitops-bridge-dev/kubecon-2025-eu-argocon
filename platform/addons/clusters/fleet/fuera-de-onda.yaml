@@ -1,0 +1,12 @@
+fuera-de-onda:
+  enabled: true
+  releaseName: fuera-de-onda
+  namespace: fuera-de-onda
+  path: addons/charts/addon-fuera-de-onda
+  valuesObject:
+    argocdApp: fuera-de-onda-{{.metadata.labels.clusterName}}
+    magicWord2: '{{.metadata.labels.clusterName}}'
+  annotationsApp:
+    argocd.argoproj.io/compare-options: ServerSideDiff=true
+
+
