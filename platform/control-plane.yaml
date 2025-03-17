@@ -20,5 +20,9 @@ spec:
     helm:
       valuesObject:
         repoURLGit: cnoe://
+        appsetPrefix: "in-cluster-"
       valueFiles:
-      - $values/addons/clusters/in-cluster/addons/values.yaml
+      - $values/addons/clusters/in-cluster/common.yaml
+      - $values/addons/clusters/in-cluster/external-secrets.yaml
+      - $values/addons/clusters/in-cluster/kube-prometheus-stack.yaml
+      - $values/addons/clusters/in-cluster/metrics-server.yaml

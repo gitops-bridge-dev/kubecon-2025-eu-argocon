@@ -1,6 +1,13 @@
-# Values for configmap generation
-# All possible combinations of these values will be used to create configmaps
+# Values for vcluster generation
 
+# Set to false if you want to limit the number of generated vclusters
+# Otherwise, all combinations will be created (clouds x regions x environments × versions × organizations)
+generateAllCombinations: false
+
+# Maximum number of configmaps to generate if generateAllCombinations is false
+maxClusters: 2
+
+# All possible combinations of these values will be used to create vclusters
 possibleValues:
   clouds:
     - aws
@@ -26,31 +33,17 @@ possibleValues:
     - team-2
     - team-3
 
+
 extraLabels:
   gpuEnabled: 'true'
+  clusterType: 'vcluster'
+  workload: 'true'
 
 extraAnnotations:
   accountId: '123456789012'
   vpcId: 'XXXXXXXXXXXXXXXXXXXXX'
   # optional flag to explicitly disable arm64 nodeSelectors
   # arm64Enabled: 'false'
-
-# Optional: Set to false if you want to limit the number of generated configmaps
-# Otherwise, all combinations will be created (environments × regions × versions × organizations)
-generateAllCombinations: false
-
-# Optional: Maximum number of configmaps to generate if generateAllCombinations is false
-maxClusters: 2
-
-# Group assignment pattern:
-# - Groups are named as "{environment}-{letter}"
-# - Each group can contain a maximum of 2 clusters
-# - The letters progress alphabetically (a, b, c, d, ...) when new groups are needed
-# - Example: for environment "development" with many clusters:
-#   - First 2 clusters: "development-a"
-#   - Next 2 clusters: "development-b"
-#   - Next 2 clusters: "development-c"
-#   - And so on...
 
 argocd:
   namespace: argocd

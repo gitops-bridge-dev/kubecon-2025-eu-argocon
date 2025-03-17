@@ -12,6 +12,7 @@
 {{- $useValuesFilePrefix := (default false .Values.useValuesFilePrefix )  -}}
 {{- $useSelectors:= .Values.useSelectors  -}}
 {{- $globalSelectors  := .Values.globalSelectors   -}}
+{{- $appsetPrefix := .Values.appsetPrefix -}}
 
 {{- range $chartName, $chartConfig := .Values }}
 {{- if and (kindIs "map" $chartConfig) (hasKey $chartConfig "enabled") }}
@@ -20,7 +21,7 @@
 apiVersion: argoproj.io/v1alpha1
 kind: ApplicationSet
 metadata:
-  name: {{ $nameNormalize }}
+  name: {{ if $appsetPrefix }}{{ $appsetPrefix | default "" }}{{ end }}{{ $nameNormalize }}
   namespace: {{ default "argocd" $namespace }}
   annotations:
     {{- include "application-sets.annotations" $ | nindent 4 }}
@@ -44,8 +45,8 @@ spec:
   {{- toYaml $syncPolicyAppSet | nindent 4 }}
   {{- end }}
   {{- if $chartConfig.gitMatrix }}
-  {{ include "application-sets.git-matrix" (dict 
-  "chartName" $nameNormalize "chartConfig" $chartConfig 
+  {{ include "application-sets.git-matrix" (dict
+  "chartName" $nameNormalize "chartConfig" $chartConfig
   "repoURLGit" $repoURLGit "repoURLGitRevision" $repoURLGitRevision
   "selectors" $globalSelectors "useSelectors" $useSelectors
     ) | nindent 2 }}
@@ -103,6 +104,17 @@ spec:
       {{- else }}
       name: '{{ $nameNormalize }}-{{`{{ .name }}`}}'
       {{- end }}
+      labels:
+        {{- if $chartConfig.path }}
+        addonVersion: {{ $repoURLGitRevision | squote }}
+        {{- else }}
+        addonVersion: '{{`{{.values.addonChartVersion }}`}}'
+        {{- end }}
+        addon: 'true'
+        addonName: {{ $nameNormalize }}
+        environment: '{{`{{.metadata.labels.environment}}`}}'
+        clusterName: '{{`{{.name}}`}}'
+        kubernetesVersion: '{{`{{default "v1.32.0" (index .metadata.labels "kubernetesVersion")}}`}}'
     spec:
       project: default
       sources:
@@ -110,9 +122,9 @@ spec:
         targetRevision: {{ $repoURLGitRevision | squote }}
         ref: values
         {{- if eq (toString $chartConfig.enableAckPodIdentity) "true" }}
-        {{ include "application-sets.pod-identity" (dict 
+        {{ include "application-sets.pod-identity" (dict
           "chartName" ($chartConfig.chartName | default $nameNormalize)
-          "valueFiles" $valueFiles 
+          "valueFiles" $valueFiles
           "chartConfig" $chartConfig "values" $values ) | nindent 6 }}
         {{- end }}
         {{- if $chartConfig.path }}
@@ -134,18 +146,18 @@ spec:
           {{- end }}
           {{- if $valueFiles }}
           valueFiles:
-          {{- include "application-sets.valueFiles" (dict 
+          {{- include "application-sets.valueFiles" (dict
             "nameNormalize" ($chartConfig.chartName | default $nameNormalize)
-            "chartConfig" $chartConfig  
+            "chartConfig" $chartConfig
             "valueFiles" $valueFiles "values" $values) | nindent 12 }}
           {{- end }}
           {{- if $chartConfig.additionalResources}}
-          {{ include "application-sets.additionalResources" (dict 
+          {{- include "application-sets.additionalResources" (dict
             "chartName" ($chartConfig.chartName | default $nameNormalize)
-            "valueFiles" $valueFiles 
-            "chartConfig" $chartConfig 
-            "values" $values 
-            "additionalResourcesType" $chartConfig.additionalResources.type 
+            "valueFiles" $valueFiles
+            "chartConfig" $chartConfig
+            "values" $values
+            "additionalResourcesType" $chartConfig.additionalResources.type
             "additionalResourcesPath" $chartConfig.additionalResources.path ) | nindent 6 }}
           {{- end}}
         {{- end }}

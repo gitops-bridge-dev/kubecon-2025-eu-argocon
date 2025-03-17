@@ -31,6 +31,14 @@ idpbuilder version
 # helm
 curl https://raw.githubusercontent.com/helm/helm/main/scripts/get-helm-3 | bash
 
+# vlcuster CLI
+arch=$(if [[ "$(uname -m)" == "x86_64" ]]; then echo "amd64"; else echo "arm64"; fi)
+os=$(uname -s | tr '[:upper:]' '[:lower:]')
+vcluster_latest_tag=$(curl --silent "https://api.github.com/repos/loft-sh/vcluster/releases/latest" | grep '"tag_name":' | sed -E 's/.*"([^"]+)".*/\1/')
+curl -s -L -o vcluster "https://github.com/loft-sh/vcluster/releases/download/${vcluster_latest_tag}/vcluster-${os}-${arch}"
+sudo install -c -m 0755 vcluster /usr/local/bin
+rm -f vcluster
+
 # setup autocomplete for kubectl and alias k
 sudo apt-get update -y && sudo apt-get install bash-completion -y
 mkdir $HOME/.kube
@@ -48,3 +56,4 @@ git clone https://github.com/awslabs/git-secrets.git $tempdir
 pushd $tempdir
 sudo make install
 popd
+
