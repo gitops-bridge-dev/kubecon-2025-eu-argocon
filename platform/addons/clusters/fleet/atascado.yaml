@@ -4,34 +4,9 @@ atascado:
   namespace: atascado
   path: addons/charts/addon-atascado
   valuesObject:
-    stuckNamespace: cluster-1
     magicWord2: '{{.metadata.labels.clusterName}}'
   annotationsApp:
     argocd.argoproj.io/compare-options: ServerSideDiff=true
-  defaultVersion: "v1.15.1"
-  environments:
-  - selector:
-      environment: ci
-    chartVersion: "v1.17.1"
-  - selector:
-      environment: staging
-      maintenanceGroup: a
-    chartVersion: "v1.16.4"
-  - selector:
-      environment: staging
-      maintenanceGroup: b
-    chartVersion: "v1.16.3"
-  - selector:
-      environment: production
-      maintenanceGroup: canary
-    chartVersion: "v1.15.5"
-  - selector:
-      environment: production
-      maintenanceGroup: a
-    chartVersion: "v1.15.4"
-  - selector:
-      environment: production
-      maintenanceGroup: b
-    chartVersion: "v1.15.3"
+
 
 
