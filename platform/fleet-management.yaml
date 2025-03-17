@@ -24,3 +24,4 @@ spec:
       - $values/addons/clusters/fleet/common.yaml
       - $values/addons/clusters/fleet/cert-manager.yaml
       - $values/addons/clusters/fleet/metrics-server.yaml
+      - $values/addons/clusters/fleet/atascado.yaml

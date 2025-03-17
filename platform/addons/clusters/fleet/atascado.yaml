@@ -1,0 +1,12 @@
+atascado:
+  enabled: true
+  releaseName: atascado
+  namespace: atascado
+  path: addons/charts/addon-atascado
+  valuesObject:
+    magicWord2: '{{.metadata.labels.clusterName}}'
+  annotationsApp:
+    argocd.argoproj.io/compare-options: ServerSideDiff=true
+
+
+

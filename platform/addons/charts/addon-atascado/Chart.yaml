@@ -1,0 +1,6 @@
+apiVersion: v2
+name: addon-atascado
+description: A Helm chart that deploys a ConfigMap and a Job that never completes
+type: application
+version: 0.1.0
+appVersion: "1.0.0"

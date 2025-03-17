@@ -115,6 +115,10 @@ spec:
         environment: '{{`{{.metadata.labels.environment}}`}}'
         clusterName: '{{`{{.name}}`}}'
         kubernetesVersion: '{{`{{default "v1.32.0" (index .metadata.labels "kubernetesVersion")}}`}}'
+      {{- if $chartConfig.annotationsApp }}
+      annotations:
+        {{- toYaml $chartConfig.annotationsApp | nindent 8 }}
+      {{- end }}
     spec:
       project: default
       sources:
