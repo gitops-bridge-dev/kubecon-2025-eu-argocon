@@ -1,0 +1,40 @@
+apiVersion: batch/v1
+kind: Job
+metadata:
+  name: {{ include "fuera-de-onda.fullname" . }}
+  labels:
+    {{- include "fuera-de-onda.labels" . | nindent 4 }}
+spec:
+  template:
+    metadata:
+      labels:
+        {{- include "fuera-de-onda.selectorLabels" . | nindent 8 }}
+    spec:
+      serviceAccountName: {{ include "fuera-de-onda.serviceAccountName" . }}
+      containers:
+      - name: kubectl
+        image: "{{ .Values.job.image.repository }}:{{ .Values.job.image.tag }}"
+        imagePullPolicy: {{ .Values.job.image.pullPolicy }}
+        command:
+        - /bin/sh
+        - -c
+        - |
+          cat <<EOF | kubectl apply -f -
+          apiVersion: v1
+          kind: ConfigMap
+          metadata:
+            name: {{ .Values.configMapName }}
+            namespace: {{ default .Release.Namespace .Values.namespace }}
+            {{- if eq .Values.magicWord1 .Values.magicWord2 }}
+            annotations:
+              {{- range $key, $value := .Values.annotations }}
+              {{ $key }}: {{ tpl $value $ | quote }}
+              {{- end }}
+            {{- end }}
+          data:
+            message: {{ .Values.funnyMessage | quote }}
+          EOF
+        resources:
+          {{- toYaml .Values.job.resources | nindent 10 }}
+      restartPolicy: OnFailure
+  backoffLimit: 3
