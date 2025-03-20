@@ -10,6 +10,10 @@ grafana:
     server:
       root_url: https://cnoe.localtest.me:8443/grafana
       serve_from_sub_path: true
+  dashboards:
+    default:
+      local-dashboard:
+        url: https://raw.githubusercontent.com/gitops-bridge-dev/kubecon-2025-eu-argocon/refs/heads/dev-carlos/platform/addons/clusters/in-cluster/addons/kube-prometheus-stack/dashboards/argocd.json
 
 # Prometheus Config
 prometheus:
