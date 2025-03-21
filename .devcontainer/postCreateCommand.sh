@@ -39,6 +39,21 @@ curl -s -L -o vcluster "https://github.com/loft-sh/vcluster/releases/download/${
 sudo install -c -m 0755 vcluster /usr/local/bin
 rm -f vcluster
 
+
+# k9s
+# install https://github.com/derailed/k9s/releases/download/v0.40.10/k9s_Freebsd_arm64.tar.gz
+arch=$(if [[ "$(uname -m)" == "x86_64" ]]; then echo "amd64"; else echo "arm64"; fi)
+os=$(uname -s | tr '[:upper:]' '[:lower:]')
+# if linux then set ostouse to Freebsd
+ostouse=$(if [[ "${os}" == "linux" ]]; then echo "Freebsd"; else echo "${os}"; fi)
+k9s_latest_tag=$(curl --silent "https://api.github.com/repos/derailed/k9s/releases/latest" | grep '"tag_name":' | sed -E 's/.*"([^"]+)".*/\1/')
+curl -s -L -o  k9s.tar.gz https://github.com/derailed/k9s/releases/download/${k9s_latest_tag}/k9s_${os}_${arch}.tar.gz
+tar -xvzf k9s.tar.gz -C /tmp
+chmod +x /tmp/k9s
+sudo install -c -m 0755 /tmp/k9s /usr/local/bin
+rm -f k9s.tar.gz
+k9s version
+
 # setup autocomplete for kubectl and alias k
 sudo apt-get update -y && sudo apt-get install bash-completion -y
 mkdir $HOME/.kube
@@ -49,6 +64,8 @@ echo "complete -F __start_kubectl k" >> $HOME/.bashrc
 if [ -z "$(docker network ls | grep kind)" ]; then
 docker network create -d=bridge -o com.docker.network.bridge.enable_ip_masquerade=true -o com.docker.network.driver.mtu=1500 --subnet fc00:f853:ccd:e793::/64 kind
 fi
+# Setup kube editor
+echo 'export KUBE_EDITOR="code --wait"' >> $HOME/.bashrc
 
 # setup git secrets
 tempdir="$(mktemp -d)"
