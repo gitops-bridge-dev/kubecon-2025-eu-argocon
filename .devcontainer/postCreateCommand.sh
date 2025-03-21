@@ -64,6 +64,8 @@ echo "complete -F __start_kubectl k" >> $HOME/.bashrc
 if [ -z "$(docker network ls | grep kind)" ]; then
 docker network create -d=bridge -o com.docker.network.bridge.enable_ip_masquerade=true -o com.docker.network.driver.mtu=1500 --subnet fc00:f853:ccd:e793::/64 kind
 fi
+# Setup kube editor
+echo 'export KUBE_EDITOR="code --wait"' >> $HOME/.bashrc
 
 # setup git secrets
 tempdir="$(mktemp -d)"

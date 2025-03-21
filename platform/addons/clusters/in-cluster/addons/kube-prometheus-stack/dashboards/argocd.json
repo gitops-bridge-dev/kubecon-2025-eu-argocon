@@ -1023,7 +1023,7 @@
       "type": "timeseries"
     },
     {
-      "collapsed": true,
+      "collapsed": false,
       "gridPos": {
         "h": 1,
         "w": 24,
@@ -1031,275 +1031,274 @@
         "y": 12
       },
       "id": 104,
-      "panels": [
-        {
-          "datasource": {
-            "uid": "$datasource"
-          },
-          "fieldConfig": {
-            "defaults": {
-              "color": {
-                "mode": "palette-classic"
-              },
-              "custom": {
-                "axisBorderShow": false,
-                "axisCenteredZero": false,
-                "axisColorMode": "text",
-                "axisLabel": "",
-                "axisPlacement": "auto",
-                "barAlignment": 0,
-                "barWidthFactor": 0.6,
-                "drawStyle": "line",
-                "fillOpacity": 10,
-                "gradientMode": "none",
-                "hideFrom": {
-                  "legend": false,
-                  "tooltip": false,
-                  "viz": false
-                },
-                "insertNulls": false,
-                "lineInterpolation": "linear",
-                "lineWidth": 1,
-                "pointSize": 5,
-                "scaleDistribution": {
-                  "type": "linear"
-                },
-                "showPoints": "never",
-                "spanNulls": false,
-                "stacking": {
-                  "group": "A",
-                  "mode": "normal"
-                },
-                "thresholdsStyle": {
-                  "mode": "off"
-                }
-              },
-              "decimals": 0,
-              "mappings": [],
-              "min": 0,
-              "thresholds": {
-                "mode": "absolute",
-                "steps": [
-                  {
-                    "color": "green",
-                    "value": null
-                  },
-                  {
-                    "color": "red",
-                    "value": 80
-                  }
-                ]
-              },
-              "unit": "short"
-            },
-            "overrides": [
-              {
-                "matcher": {
-                  "id": "byValue",
-                  "options": {
-                    "op": "gte",
-                    "reducer": "allIsZero",
-                    "value": 0
-                  }
-                },
-                "properties": [
-                  {
-                    "id": "custom.hideFrom",
-                    "value": {
-                      "legend": true,
-                      "tooltip": true,
-                      "viz": false
-                    }
-                  }
-                ]
-              },
-              {
-                "matcher": {
-                  "id": "byValue",
-                  "options": {
-                    "op": "gte",
-                    "reducer": "allIsNull",
-                    "value": 0
-                  }
-                },
-                "properties": [
-                  {
-                    "id": "custom.hideFrom",
-                    "value": {
-                      "legend": true,
-                      "tooltip": true,
-                      "viz": false
-                    }
-                  }
-                ]
-              }
-            ]
-          },
-          "gridPos": {
-            "h": 6,
-            "w": 24,
-            "x": 0,
-            "y": 13
-          },
-          "id": 56,
-          "options": {
-            "dataLinks": [],
-            "legend": {
-              "calcs": [
-                "lastNotNull",
-                "sum"
-              ],
-              "displayMode": "table",
-              "placement": "right",
-              "showLegend": true
-            },
-            "tooltip": {
-              "hideZeros": false,
-              "mode": "multi",
-              "sort": "desc"
-            }
-          },
-          "pluginVersion": "11.5.2",
-          "targets": [
-            {
-              "datasource": {
-                "uid": "$datasource"
-              },
-              "expr": "sum(round(increase(argocd_app_sync_total{namespace=~\"$namespace\",dest_server=~\"$cluster\"}[$interval]))) by ($grouping)",
-              "format": "time_series",
-              "intervalFactor": 1,
-              "legendFormat": "{{$grouping}}",
-              "refId": "A"
-            }
-          ],
-          "title": "Sync Activity",
-          "type": "timeseries"
-        },
-        {
-          "datasource": {
-            "uid": "$datasource"
-          },
-          "fieldConfig": {
-            "defaults": {
-              "color": {
-                "mode": "palette-classic"
-              },
-              "custom": {
-                "axisBorderShow": false,
-                "axisCenteredZero": false,
-                "axisColorMode": "text",
-                "axisLabel": "",
-                "axisPlacement": "auto",
-                "barAlignment": 0,
-                "barWidthFactor": 0.6,
-                "drawStyle": "line",
-                "fillOpacity": 10,
-                "gradientMode": "none",
-                "hideFrom": {
-                  "legend": false,
-                  "tooltip": false,
-                  "viz": false
-                },
-                "insertNulls": false,
-                "lineInterpolation": "linear",
-                "lineWidth": 1,
-                "pointSize": 5,
-                "scaleDistribution": {
-                  "type": "linear"
-                },
-                "showPoints": "never",
-                "spanNulls": false,
-                "stacking": {
-                  "group": "A",
-                  "mode": "normal"
-                },
-                "thresholdsStyle": {
-                  "mode": "off"
-                }
-              },
-              "decimals": 0,
-              "mappings": [],
-              "min": 0,
-              "thresholds": {
-                "mode": "absolute",
-                "steps": [
-                  {
-                    "color": "green",
-                    "value": null
-                  },
-                  {
-                    "color": "red",
-                    "value": 80
-                  }
-                ]
-              },
-              "unit": "none"
-            },
-            "overrides": [
-              {
-                "matcher": {
-                  "id": "byValue",
-                  "options": {
-                    "op": "gte",
-                    "reducer": "allIsNull",
-                    "value": 0
-                  }
-                },
-                "properties": [
-                  {
-                    "id": "custom.hideFrom",
-                    "value": {
-                      "legend": true,
-                      "tooltip": true,
-                      "viz": false
-                    }
-                  }
-                ]
-              }
-            ]
-          },
-          "gridPos": {
-            "h": 5,
-            "w": 24,
-            "x": 0,
-            "y": 19
-          },
-          "id": 73,
-          "options": {
-            "dataLinks": [],
-            "legend": {
-              "calcs": [
-                "sum"
-              ],
-              "displayMode": "table",
-              "placement": "right",
-              "showLegend": true
-            },
-            "tooltip": {
-              "hideZeros": false,
-              "mode": "multi",
-              "sort": "desc"
-            }
-          },
-          "pluginVersion": "11.5.2",
-          "targets": [
-            {
-              "datasource": {
-                "uid": "$datasource"
-              },
-              "expr": "sum(round(increase(argocd_app_sync_total{namespace=~\"$namespace\",phase=~\"Error|Failed\",dest_server=~\"$cluster\"}[$interval]))) by ($grouping, phase)",
-              "format": "time_series",
-              "intervalFactor": 1,
-              "legendFormat": "{{phase}}: {{$grouping}}",
-              "refId": "A"
-            }
-          ],
-          "title": "Sync Failures",
-          "type": "timeseries"
-        }
-      ],
+      "panels": [],
       "title": "Sync Stats",
       "type": "row"
+    },
+    {
+      "datasource": {
+        "uid": "$datasource"
+      },
+      "fieldConfig": {
+        "defaults": {
+          "color": {
+            "mode": "palette-classic"
+          },
+          "custom": {
+            "axisBorderShow": false,
+            "axisCenteredZero": false,
+            "axisColorMode": "text",
+            "axisLabel": "",
+            "axisPlacement": "auto",
+            "barAlignment": 0,
+            "barWidthFactor": 0.6,
+            "drawStyle": "line",
+            "fillOpacity": 10,
+            "gradientMode": "none",
+            "hideFrom": {
+              "legend": false,
+              "tooltip": false,
+              "viz": false
+            },
+            "insertNulls": false,
+            "lineInterpolation": "linear",
+            "lineWidth": 1,
+            "pointSize": 5,
+            "scaleDistribution": {
+              "type": "linear"
+            },
+            "showPoints": "never",
+            "spanNulls": false,
+            "stacking": {
+              "group": "A",
+              "mode": "normal"
+            },
+            "thresholdsStyle": {
+              "mode": "off"
+            }
+          },
+          "decimals": 0,
+          "mappings": [],
+          "min": 0,
+          "thresholds": {
+            "mode": "absolute",
+            "steps": [
+              {
+                "color": "green",
+                "value": null
+              },
+              {
+                "color": "red",
+                "value": 80
+              }
+            ]
+          },
+          "unit": "short"
+        },
+        "overrides": [
+          {
+            "matcher": {
+              "id": "byValue",
+              "options": {
+                "op": "gte",
+                "reducer": "allIsZero",
+                "value": 0
+              }
+            },
+            "properties": [
+              {
+                "id": "custom.hideFrom",
+                "value": {
+                  "legend": true,
+                  "tooltip": true,
+                  "viz": false
+                }
+              }
+            ]
+          },
+          {
+            "matcher": {
+              "id": "byValue",
+              "options": {
+                "op": "gte",
+                "reducer": "allIsNull",
+                "value": 0
+              }
+            },
+            "properties": [
+              {
+                "id": "custom.hideFrom",
+                "value": {
+                  "legend": true,
+                  "tooltip": true,
+                  "viz": false
+                }
+              }
+            ]
+          }
+        ]
+      },
+      "gridPos": {
+        "h": 6,
+        "w": 24,
+        "x": 0,
+        "y": 13
+      },
+      "id": 56,
+      "options": {
+        "dataLinks": [],
+        "legend": {
+          "calcs": [
+            "lastNotNull",
+            "sum"
+          ],
+          "displayMode": "table",
+          "placement": "right",
+          "showLegend": true
+        },
+        "tooltip": {
+          "hideZeros": false,
+          "mode": "multi",
+          "sort": "desc"
+        }
+      },
+      "pluginVersion": "11.5.2",
+      "targets": [
+        {
+          "datasource": {
+            "uid": "$datasource"
+          },
+          "expr": "sum(round(increase(argocd_app_sync_total{namespace=~\"$namespace\",dest_server=~\"$cluster\"}[$interval]))) by ($grouping)",
+          "format": "time_series",
+          "intervalFactor": 1,
+          "legendFormat": "{{$grouping}}",
+          "refId": "A"
+        }
+      ],
+      "title": "Sync Activity",
+      "type": "timeseries"
+    },
+    {
+      "datasource": {
+        "uid": "$datasource"
+      },
+      "fieldConfig": {
+        "defaults": {
+          "color": {
+            "mode": "palette-classic"
+          },
+          "custom": {
+            "axisBorderShow": false,
+            "axisCenteredZero": false,
+            "axisColorMode": "text",
+            "axisLabel": "",
+            "axisPlacement": "auto",
+            "barAlignment": 0,
+            "barWidthFactor": 0.6,
+            "drawStyle": "line",
+            "fillOpacity": 10,
+            "gradientMode": "none",
+            "hideFrom": {
+              "legend": false,
+              "tooltip": false,
+              "viz": false
+            },
+            "insertNulls": false,
+            "lineInterpolation": "linear",
+            "lineWidth": 1,
+            "pointSize": 5,
+            "scaleDistribution": {
+              "type": "linear"
+            },
+            "showPoints": "never",
+            "spanNulls": false,
+            "stacking": {
+              "group": "A",
+              "mode": "normal"
+            },
+            "thresholdsStyle": {
+              "mode": "off"
+            }
+          },
+          "decimals": 0,
+          "mappings": [],
+          "min": 0,
+          "thresholds": {
+            "mode": "absolute",
+            "steps": [
+              {
+                "color": "green",
+                "value": null
+              },
+              {
+                "color": "red",
+                "value": 80
+              }
+            ]
+          },
+          "unit": "none"
+        },
+        "overrides": [
+          {
+            "matcher": {
+              "id": "byValue",
+              "options": {
+                "op": "gte",
+                "reducer": "allIsNull",
+                "value": 0
+              }
+            },
+            "properties": [
+              {
+                "id": "custom.hideFrom",
+                "value": {
+                  "legend": true,
+                  "tooltip": true,
+                  "viz": false
+                }
+              }
+            ]
+          }
+        ]
+      },
+      "gridPos": {
+        "h": 5,
+        "w": 24,
+        "x": 0,
+        "y": 19
+      },
+      "id": 73,
+      "options": {
+        "dataLinks": [],
+        "legend": {
+          "calcs": [
+            "sum"
+          ],
+          "displayMode": "table",
+          "placement": "right",
+          "showLegend": true
+        },
+        "tooltip": {
+          "hideZeros": false,
+          "mode": "multi",
+          "sort": "desc"
+        }
+      },
+      "pluginVersion": "11.5.2",
+      "targets": [
+        {
+          "datasource": {
+            "uid": "$datasource"
+          },
+          "expr": "sum(round(increase(argocd_app_sync_total{namespace=~\"$namespace\",phase=~\"Error|Failed\",dest_server=~\"$cluster\"}[$interval]))) by ($grouping, phase)",
+          "format": "time_series",
+          "intervalFactor": 1,
+          "legendFormat": "{{phase}}: {{$grouping}}",
+          "refId": "A"
+        }
+      ],
+      "title": "Sync Failures",
+      "type": "timeseries"
     },
     {
       "collapsed": true,
@@ -1307,7 +1306,7 @@
         "h": 1,
         "w": 24,
         "x": 0,
-        "y": 13
+        "y": 24
       },
       "id": 64,
       "panels": [
@@ -1375,7 +1374,7 @@
             "h": 6,
             "w": 24,
             "x": 0,
-            "y": 3076
+            "y": 2542
           },
           "id": 58,
           "options": {
@@ -1436,7 +1435,7 @@
             "h": 7,
             "w": 24,
             "x": 0,
-            "y": 3082
+            "y": 2548
           },
           "id": 60,
           "options": {
@@ -1601,7 +1600,7 @@
             "h": 6,
             "w": 24,
             "x": 0,
-            "y": 3089
+            "y": 2555
           },
           "id": 80,
           "options": {
@@ -1724,7 +1723,7 @@
             "h": 7,
             "w": 12,
             "x": 0,
-            "y": 3095
+            "y": 2561
           },
           "id": 96,
           "options": {
@@ -1827,7 +1826,7 @@
             "h": 7,
             "w": 12,
             "x": 12,
-            "y": 3095
+            "y": 2561
           },
           "id": 98,
           "options": {
@@ -1874,7 +1873,7 @@
         "h": 1,
         "w": 24,
         "x": 0,
-        "y": 14
+        "y": 25
       },
       "id": 102,
       "panels": [
@@ -1943,7 +1942,7 @@
             "h": 7,
             "w": 24,
             "x": 0,
-            "y": 4513
+            "y": 3791
           },
           "id": 34,
           "options": {
@@ -2087,7 +2086,7 @@
             "h": 7,
             "w": 24,
             "x": 0,
-            "y": 4520
+            "y": 3798
           },
           "id": 108,
           "options": {
@@ -2189,7 +2188,7 @@
             "h": 7,
             "w": 24,
             "x": 0,
-            "y": 4527
+            "y": 3805
           },
           "id": 62,
           "options": {
@@ -2236,7 +2235,7 @@
         "h": 1,
         "w": 24,
         "x": 0,
-        "y": 15
+        "y": 26
       },
       "id": 117,
       "panels": [
@@ -2305,7 +2304,7 @@
             "h": 7,
             "w": 24,
             "x": 0,
-            "y": 6642
+            "y": 4403
           },
           "id": 118,
           "options": {
@@ -2451,7 +2450,7 @@
             "h": 7,
             "w": 24,
             "x": 0,
-            "y": 6649
+            "y": 4410
           },
           "id": 119,
           "options": {
@@ -2478,10 +2477,12 @@
               "datasource": {
                 "uid": "$datasource"
               },
-              "expr": "irate(process_cpu_seconds_total{job=\"argocd-applicationset-controller-metrics\",namespace=~\"$namespace\"}[1m])",
+              "editorMode": "code",
+              "expr": "irate(process_cpu_seconds_total{job=\"argocd-applicationset-controller\",namespace=~\"$namespace\"}[1m])",
               "format": "time_series",
               "intervalFactor": 1,
               "legendFormat": "{{namespace}}",
+              "range": true,
               "refId": "A"
             }
           ],
@@ -2553,7 +2554,7 @@
             "h": 7,
             "w": 24,
             "x": 0,
-            "y": 6656
+            "y": 4417
           },
           "id": 120,
           "options": {
@@ -2580,10 +2581,12 @@
               "datasource": {
                 "uid": "$datasource"
               },
-              "expr": "go_goroutines{job=\"argocd-applicationset-controller-metrics\",namespace=~\"$namespace\"}",
+              "editorMode": "code",
+              "expr": "go_goroutines{job=\"argocd-applicationset-controller\",namespace=~\"$namespace\"}",
               "format": "time_series",
               "intervalFactor": 1,
               "legendFormat": "{{namespace}}",
+              "range": true,
               "refId": "A"
             }
           ],
@@ -2600,7 +2603,7 @@
         "h": 1,
         "w": 24,
         "x": 0,
-        "y": 16
+        "y": 27
       },
       "id": 88,
       "panels": [
@@ -2668,7 +2671,7 @@
             "h": 7,
             "w": 24,
             "x": 0,
-            "y": 5220
+            "y": 4699
           },
           "id": 90,
           "options": {
@@ -2788,7 +2791,7 @@
             "h": 6,
             "w": 24,
             "x": 0,
-            "y": 5227
+            "y": 4960
           },
           "id": 92,
           "options": {
@@ -2887,7 +2890,7 @@
             "h": 7,
             "w": 24,
             "x": 0,
-            "y": 5233
+            "y": 4966
           },
           "id": 86,
           "options": {
@@ -2933,7 +2936,7 @@
         "h": 1,
         "w": 24,
         "x": 0,
-        "y": 17
+        "y": 28
       },
       "id": 70,
       "panels": [
@@ -3002,7 +3005,7 @@
             "h": 8,
             "w": 12,
             "x": 0,
-            "y": 5374
+            "y": 4700
           },
           "id": 82,
           "options": {
@@ -3100,7 +3103,7 @@
             "h": 8,
             "w": 12,
             "x": 12,
-            "y": 5374
+            "y": 4700
           },
           "id": 84,
           "options": {
@@ -3156,7 +3159,7 @@
             "h": 8,
             "w": 12,
             "x": 0,
-            "y": 5382
+            "y": 4772
           },
           "id": 114,
           "options": {
@@ -3201,13 +3204,16 @@
           "targets": [
             {
               "datasource": {
+                "type": "prometheus",
                 "uid": "$datasource"
               },
+              "editorMode": "code",
               "expr": "sum(increase(argocd_git_request_duration_seconds_bucket{request_type=\"fetch\", namespace=~\"$namespace\"}[$interval])) by (le)",
-              "format": "heatmap",
-              "intervalFactor": 10,
-              "legendFormat": "{{le}}",
-              "refId": "A"
+              "hide": false,
+              "instant": false,
+              "legendFormat": "__auto",
+              "range": true,
+              "refId": "B"
             }
           ],
           "title": "Git Fetch Performance",
@@ -3236,7 +3242,7 @@
             "h": 8,
             "w": 12,
             "x": 12,
-            "y": 5382
+            "y": 4772
           },
           "id": 116,
           "options": {
@@ -3281,13 +3287,16 @@
           "targets": [
             {
               "datasource": {
+                "type": "prometheus",
                 "uid": "$datasource"
               },
+              "editorMode": "code",
               "expr": "sum(increase(argocd_git_request_duration_seconds_bucket{request_type=\"ls-remote\", namespace=~\"$namespace\"}[$interval])) by (le)",
-              "format": "heatmap",
-              "intervalFactor": 10,
-              "legendFormat": "{{le}}",
-              "refId": "A"
+              "hide": false,
+              "instant": false,
+              "legendFormat": "__auto",
+              "range": true,
+              "refId": "B"
             }
           ],
           "title": "Git Ls-Remote Performance",
@@ -3358,7 +3367,7 @@
             "h": 8,
             "w": 24,
             "x": 0,
-            "y": 5390
+            "y": 4780
           },
           "id": 71,
           "options": {
@@ -3455,7 +3464,7 @@
             "h": 7,
             "w": 24,
             "x": 0,
-            "y": 5398
+            "y": 4788
           },
           "id": 72,
           "options": {
@@ -3498,7 +3507,7 @@
         "h": 1,
         "w": 24,
         "x": 0,
-        "y": 18
+        "y": 29
       },
       "id": 66,
       "panels": [
@@ -3567,7 +3576,7 @@
             "h": 8,
             "w": 24,
             "x": 0,
-            "y": 5605
+            "y": 4701
           },
           "id": 61,
           "options": {
@@ -3666,7 +3675,7 @@
             "h": 9,
             "w": 24,
             "x": 0,
-            "y": 5613
+            "y": 4709
           },
           "id": 36,
           "options": {
@@ -3765,7 +3774,7 @@
             "h": 9,
             "w": 24,
             "x": 0,
-            "y": 5622
+            "y": 4718
           },
           "id": 38,
           "options": {
@@ -3809,7 +3818,7 @@
             "h": 2,
             "w": 24,
             "x": 0,
-            "y": 5631
+            "y": 4727
           },
           "id": 54,
           "options": {
@@ -3931,7 +3940,7 @@
             "h": 9,
             "w": 12,
             "x": 0,
-            "y": 5633
+            "y": 4729
           },
           "id": 40,
           "options": {
@@ -4072,7 +4081,7 @@
             "h": 9,
             "w": 12,
             "x": 12,
-            "y": 5633
+            "y": 4729
           },
           "id": 42,
           "options": {
@@ -4213,7 +4222,7 @@
             "h": 9,
             "w": 12,
             "x": 0,
-            "y": 5642
+            "y": 4738
           },
           "id": 44,
           "options": {
@@ -4353,7 +4362,7 @@
             "h": 9,
             "w": 12,
             "x": 12,
-            "y": 5642
+            "y": 4738
           },
           "id": 46,
           "options": {
@@ -4394,17 +4403,81 @@
             "uid": "$datasource"
           },
           "fieldConfig": {
-            "defaults": {},
+            "defaults": {
+              "color": {
+                "mode": "palette-classic"
+              },
+              "custom": {
+                "axisBorderShow": false,
+                "axisCenteredZero": false,
+                "axisColorMode": "text",
+                "axisLabel": "",
+                "axisPlacement": "auto",
+                "barAlignment": 0,
+                "barWidthFactor": 0.6,
+                "drawStyle": "line",
+                "fillOpacity": 0,
+                "gradientMode": "none",
+                "hideFrom": {
+                  "legend": false,
+                  "tooltip": false,
+                  "viz": false
+                },
+                "insertNulls": false,
+                "lineInterpolation": "linear",
+                "lineWidth": 1,
+                "pointSize": 5,
+                "scaleDistribution": {
+                  "type": "linear"
+                },
+                "showPoints": "auto",
+                "spanNulls": false,
+                "stacking": {
+                  "group": "A",
+                  "mode": "none"
+                },
+                "thresholdsStyle": {
+                  "mode": "off"
+                }
+              },
+              "mappings": [],
+              "thresholds": {
+                "mode": "absolute",
+                "steps": [
+                  {
+                    "color": "green",
+                    "value": null
+                  },
+                  {
+                    "color": "red",
+                    "value": 80
+                  }
+                ]
+              }
+            },
             "overrides": []
           },
           "gridPos": {
             "h": 9,
             "w": 12,
             "x": 0,
-            "y": 5651
+            "y": 4747
           },
           "id": 48,
-          "options": {},
+          "options": {
+            "legend": {
+              "calcs": [],
+              "displayMode": "list",
+              "placement": "bottom",
+              "showLegend": true
+            },
+            "tooltip": {
+              "hideZeros": false,
+              "mode": "single",
+              "sort": "none"
+            }
+          },
+          "pluginVersion": "11.5.2",
           "targets": [
             {
               "datasource": {
@@ -4425,17 +4498,81 @@
             "uid": "$datasource"
           },
           "fieldConfig": {
-            "defaults": {},
+            "defaults": {
+              "color": {
+                "mode": "palette-classic"
+              },
+              "custom": {
+                "axisBorderShow": false,
+                "axisCenteredZero": false,
+                "axisColorMode": "text",
+                "axisLabel": "",
+                "axisPlacement": "auto",
+                "barAlignment": 0,
+                "barWidthFactor": 0.6,
+                "drawStyle": "line",
+                "fillOpacity": 0,
+                "gradientMode": "none",
+                "hideFrom": {
+                  "legend": false,
+                  "tooltip": false,
+                  "viz": false
+                },
+                "insertNulls": false,
+                "lineInterpolation": "linear",
+                "lineWidth": 1,
+                "pointSize": 5,
+                "scaleDistribution": {
+                  "type": "linear"
+                },
+                "showPoints": "auto",
+                "spanNulls": false,
+                "stacking": {
+                  "group": "A",
+                  "mode": "none"
+                },
+                "thresholdsStyle": {
+                  "mode": "off"
+                }
+              },
+              "mappings": [],
+              "thresholds": {
+                "mode": "absolute",
+                "steps": [
+                  {
+                    "color": "green",
+                    "value": null
+                  },
+                  {
+                    "color": "red",
+                    "value": 80
+                  }
+                ]
+              }
+            },
             "overrides": []
           },
           "gridPos": {
             "h": 9,
             "w": 12,
             "x": 12,
-            "y": 5651
+            "y": 4747
           },
           "id": 49,
-          "options": {},
+          "options": {
+            "legend": {
+              "calcs": [],
+              "displayMode": "list",
+              "placement": "bottom",
+              "showLegend": true
+            },
+            "tooltip": {
+              "hideZeros": false,
+              "mode": "single",
+              "sort": "none"
+            }
+          },
+          "pluginVersion": "11.5.2",
           "targets": [
             {
               "datasource": {
@@ -4456,17 +4593,81 @@
             "uid": "$datasource"
           },
           "fieldConfig": {
-            "defaults": {},
+            "defaults": {
+              "color": {
+                "mode": "palette-classic"
+              },
+              "custom": {
+                "axisBorderShow": false,
+                "axisCenteredZero": false,
+                "axisColorMode": "text",
+                "axisLabel": "",
+                "axisPlacement": "auto",
+                "barAlignment": 0,
+                "barWidthFactor": 0.6,
+                "drawStyle": "line",
+                "fillOpacity": 0,
+                "gradientMode": "none",
+                "hideFrom": {
+                  "legend": false,
+                  "tooltip": false,
+                  "viz": false
+                },
+                "insertNulls": false,
+                "lineInterpolation": "linear",
+                "lineWidth": 1,
+                "pointSize": 5,
+                "scaleDistribution": {
+                  "type": "linear"
+                },
+                "showPoints": "auto",
+                "spanNulls": false,
+                "stacking": {
+                  "group": "A",
+                  "mode": "none"
+                },
+                "thresholdsStyle": {
+                  "mode": "off"
+                }
+              },
+              "mappings": [],
+              "thresholds": {
+                "mode": "absolute",
+                "steps": [
+                  {
+                    "color": "green",
+                    "value": null
+                  },
+                  {
+                    "color": "red",
+                    "value": 80
+                  }
+                ]
+              }
+            },
             "overrides": []
           },
           "gridPos": {
             "h": 9,
             "w": 12,
             "x": 0,
-            "y": 5660
+            "y": 4756
           },
           "id": 50,
-          "options": {},
+          "options": {
+            "legend": {
+              "calcs": [],
+              "displayMode": "list",
+              "placement": "bottom",
+              "showLegend": true
+            },
+            "tooltip": {
+              "hideZeros": false,
+              "mode": "single",
+              "sort": "none"
+            }
+          },
+          "pluginVersion": "11.5.2",
           "targets": [
             {
               "datasource": {
@@ -4487,17 +4688,81 @@
             "uid": "$datasource"
           },
           "fieldConfig": {
-            "defaults": {},
+            "defaults": {
+              "color": {
+                "mode": "palette-classic"
+              },
+              "custom": {
+                "axisBorderShow": false,
+                "axisCenteredZero": false,
+                "axisColorMode": "text",
+                "axisLabel": "",
+                "axisPlacement": "auto",
+                "barAlignment": 0,
+                "barWidthFactor": 0.6,
+                "drawStyle": "line",
+                "fillOpacity": 0,
+                "gradientMode": "none",
+                "hideFrom": {
+                  "legend": false,
+                  "tooltip": false,
+                  "viz": false
+                },
+                "insertNulls": false,
+                "lineInterpolation": "linear",
+                "lineWidth": 1,
+                "pointSize": 5,
+                "scaleDistribution": {
+                  "type": "linear"
+                },
+                "showPoints": "auto",
+                "spanNulls": false,
+                "stacking": {
+                  "group": "A",
+                  "mode": "none"
+                },
+                "thresholdsStyle": {
+                  "mode": "off"
+                }
+              },
+              "mappings": [],
+              "thresholds": {
+                "mode": "absolute",
+                "steps": [
+                  {
+                    "color": "green",
+                    "value": null
+                  },
+                  {
+                    "color": "red",
+                    "value": 80
+                  }
+                ]
+              }
+            },
             "overrides": []
           },
           "gridPos": {
             "h": 9,
             "w": 12,
             "x": 12,
-            "y": 5660
+            "y": 4756
           },
           "id": 99,
-          "options": {},
+          "options": {
+            "legend": {
+              "calcs": [],
+              "displayMode": "list",
+              "placement": "bottom",
+              "showLegend": true
+            },
+            "tooltip": {
+              "hideZeros": false,
+              "mode": "single",
+              "sort": "none"
+            }
+          },
+          "pluginVersion": "11.5.2",
           "targets": [
             {
               "datasource": {
@@ -4523,7 +4788,7 @@
         "h": 1,
         "w": 24,
         "x": 0,
-        "y": 19
+        "y": 30
       },
       "id": 110,
       "panels": [
@@ -4576,8 +4841,7 @@
                 "mode": "absolute",
                 "steps": [
                   {
-                    "color": "green",
-                    "value": null
+                    "color": "green"
                   },
                   {
                     "color": "red",
@@ -4593,7 +4857,7 @@
             "h": 7,
             "w": 24,
             "x": 0,
-            "y": 5670
+            "y": 10715
           },
           "id": 112,
           "options": {
