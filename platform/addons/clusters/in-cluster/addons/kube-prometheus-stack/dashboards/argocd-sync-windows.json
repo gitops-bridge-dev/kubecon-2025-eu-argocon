@@ -1,0 +1,608 @@
+{
+    "annotations": {
+      "list": [
+        {
+          "builtIn": 1,
+          "datasource": "-- Grafana --",
+          "enable": true,
+          "hide": true,
+          "iconColor": "rgba(0, 211, 255, 1)",
+          "name": "Annotations & Alerts",
+          "target": {
+            "limit": 100,
+            "matchAny": false,
+            "tags": [],
+            "type": "dashboard"
+          },
+          "type": "dashboard"
+        }
+      ]
+    },
+    "description": "Argo CD Application Status",
+    "editable": true,
+    "fiscalYearStartMonth": 0,
+    "graphTooltip": 0,
+    "id": 30,
+    "links": [],
+    "panels": [
+      {
+        "collapsed": false,
+        "gridPos": {
+          "h": 1,
+          "w": 24,
+          "x": 0,
+          "y": 0
+        },
+        "id": 140,
+        "panels": [],
+        "title": "Deny Sync Windows",
+        "type": "row"
+      },
+      {
+        "datasource": {
+          "type": "prometheus",
+          "uid": "$datasource"
+        },
+        "description": "",
+        "fieldConfig": {
+          "defaults": {
+            "color": {
+              "mode": "continuous-reds"
+            },
+            "custom": {
+              "align": "auto",
+              "cellOptions": {
+                "type": "auto"
+              },
+              "filterable": false,
+              "inspect": false
+            },
+            "mappings": [],
+            "thresholds": {
+              "mode": "absolute",
+              "steps": [
+                {
+                  "color": "semi-dark-red",
+                  "value": null
+                }
+              ]
+            }
+          },
+          "overrides": []
+        },
+        "gridPos": {
+          "h": 14,
+          "w": 12,
+          "x": 0,
+          "y": 1
+        },
+        "id": 208,
+        "options": {
+          "cellHeight": "sm",
+          "footer": {
+            "countRows": false,
+            "enablePagination": false,
+            "fields": "",
+            "reducer": [
+              "sum"
+            ],
+            "show": false
+          },
+          "frameIndex": 0,
+          "showHeader": true,
+          "sortBy": []
+        },
+        "pluginVersion": "11.5.2",
+        "targets": [
+          {
+            "datasource": "$datasource",
+            "editorMode": "code",
+            "exemplar": false,
+            "expr": "count(argocd_appproject_sync_windows{kind=\"deny\",cluster!=\"\", project=~\".*$project.*\"}) by (cluster, project)",
+            "format": "table",
+            "instant": true,
+            "legendFormat": "__auto",
+            "range": false,
+            "refId": "A"
+          }
+        ],
+        "title": "Clusters",
+        "transformations": [
+          {
+            "id": "merge",
+            "options": {}
+          },
+          {
+            "id": "filterFieldsByName",
+            "options": {
+              "byVariable": false,
+              "include": {
+                "pattern": ""
+              }
+            }
+          },
+          {
+            "id": "organize",
+            "options": {
+              "excludeByName": {
+                "Time": true,
+                "Value": true,
+                "cluster": false
+              },
+              "includeByName": {},
+              "indexByName": {
+                "dest_cluster": 0
+              },
+              "renameByName": {
+                "Time": "",
+                "Value": "",
+                "cluster": "Destination Cluster",
+                "dest_cluster": "Cluster Name",
+                "namespace": "Argo CD instance",
+                "project": "App Project"
+              }
+            }
+          }
+        ],
+        "type": "table"
+      },
+      {
+        "datasource": {
+          "type": "prometheus",
+          "uid": "$datasource"
+        },
+        "description": "",
+        "fieldConfig": {
+          "defaults": {
+            "color": {
+              "mode": "continuous-reds"
+            },
+            "custom": {
+              "align": "auto",
+              "cellOptions": {
+                "type": "auto"
+              },
+              "filterable": false,
+              "inspect": false
+            },
+            "mappings": [],
+            "thresholds": {
+              "mode": "absolute",
+              "steps": [
+                {
+                  "color": "semi-dark-red",
+                  "value": null
+                }
+              ]
+            }
+          },
+          "overrides": []
+        },
+        "gridPos": {
+          "h": 14,
+          "w": 12,
+          "x": 12,
+          "y": 1
+        },
+        "id": 217,
+        "options": {
+          "cellHeight": "sm",
+          "footer": {
+            "countRows": false,
+            "enablePagination": false,
+            "fields": "",
+            "reducer": [
+              "sum"
+            ],
+            "show": false
+          },
+          "frameIndex": 0,
+          "showHeader": true,
+          "sortBy": []
+        },
+        "pluginVersion": "11.5.2",
+        "targets": [
+          {
+            "datasource": "$datasource",
+            "editorMode": "code",
+            "exemplar": false,
+            "expr": "count(argocd_appproject_sync_windows{kind=\"deny\",application!=\"\", project=~\".*$project.*\"}) by (application, project)",
+            "format": "table",
+            "instant": true,
+            "legendFormat": "__auto",
+            "range": false,
+            "refId": "A"
+          }
+        ],
+        "title": "Applications",
+        "transformations": [
+          {
+            "id": "merge",
+            "options": {}
+          },
+          {
+            "id": "filterFieldsByName",
+            "options": {
+              "byVariable": false,
+              "include": {
+                "pattern": ""
+              }
+            }
+          },
+          {
+            "id": "organize",
+            "options": {
+              "excludeByName": {
+                "Time": true,
+                "Value": true,
+                "cluster": false
+              },
+              "includeByName": {},
+              "indexByName": {
+                "dest_cluster": 0
+              },
+              "renameByName": {
+                "Time": "",
+                "Value": "",
+                "application": "Application",
+                "dest_cluster": "Cluster Name",
+                "namespace": "Argo CD instance",
+                "project": "App Project"
+              }
+            }
+          }
+        ],
+        "type": "table"
+      },
+      {
+        "collapsed": false,
+        "gridPos": {
+          "h": 1,
+          "w": 24,
+          "x": 0,
+          "y": 15
+        },
+        "id": 213,
+        "panels": [],
+        "title": "Applications with Issues",
+        "type": "row"
+      },
+      {
+        "datasource": {
+          "type": "prometheus",
+          "uid": "$datasource"
+        },
+        "description": "",
+        "fieldConfig": {
+          "defaults": {
+            "color": {
+              "mode": "continuous-reds"
+            },
+            "custom": {
+              "align": "auto",
+              "cellOptions": {
+                "type": "auto"
+              },
+              "filterable": false,
+              "inspect": false
+            },
+            "mappings": [],
+            "thresholds": {
+              "mode": "absolute",
+              "steps": [
+                {
+                  "color": "semi-dark-red",
+                  "value": null
+                }
+              ]
+            }
+          },
+          "overrides": [
+            {
+              "matcher": {
+                "id": "byName",
+                "options": "Destination Cluster"
+              },
+              "properties": [
+                {
+                  "id": "custom.width",
+                  "value": 209
+                }
+              ]
+            }
+          ]
+        },
+        "gridPos": {
+          "h": 14,
+          "w": 12,
+          "x": 0,
+          "y": 16
+        },
+        "id": 218,
+        "options": {
+          "cellHeight": "sm",
+          "footer": {
+            "countRows": false,
+            "enablePagination": false,
+            "fields": "",
+            "reducer": [
+              "sum"
+            ],
+            "show": false
+          },
+          "frameIndex": 0,
+          "showHeader": true,
+          "sortBy": []
+        },
+        "pluginVersion": "11.5.2",
+        "targets": [
+          {
+            "datasource": "$datasource",
+            "editorMode": "code",
+            "exemplar": false,
+            "expr": "count(argocd_application_out_of_sync{application=~\".*$application.*\", project=~\".*$project.*\"}) by (application, cluster, project, phase, sync_status, health_status)",
+            "format": "table",
+            "instant": true,
+            "legendFormat": "__auto",
+            "range": false,
+            "refId": "A"
+          }
+        ],
+        "title": "Out of Sync/Unhealthy",
+        "transformations": [
+          {
+            "id": "merge",
+            "options": {}
+          },
+          {
+            "id": "filterFieldsByName",
+            "options": {
+              "byVariable": false,
+              "include": {
+                "pattern": ""
+              }
+            }
+          },
+          {
+            "id": "organize",
+            "options": {
+              "excludeByName": {
+                "Time": true,
+                "Value": true,
+                "cluster": false
+              },
+              "includeByName": {},
+              "indexByName": {
+                "Time": 0,
+                "Value": 7,
+                "application": 1,
+                "cluster": 2,
+                "health_status": 6,
+                "phase": 4,
+                "project": 3,
+                "sync_status": 5
+              },
+              "renameByName": {
+                "Time": "",
+                "Value": "",
+                "application": "Application",
+                "cluster": "Destination Cluster",
+                "dest_cluster": "Cluster Name",
+                "health_status": "Health Status",
+                "namespace": "Argo CD instance",
+                "phase": "Sync Phase",
+                "project": "AppProject",
+                "sync_status": "Sync Status"
+              }
+            }
+          }
+        ],
+        "type": "table"
+      },
+      {
+        "datasource": {
+          "type": "prometheus",
+          "uid": "$datasource"
+        },
+        "description": "Application Deployments that have been running for more than 1 hour but have not yet completed for some reason",
+        "fieldConfig": {
+          "defaults": {
+            "color": {
+              "mode": "continuous-reds"
+            },
+            "custom": {
+              "align": "auto",
+              "cellOptions": {
+                "type": "auto"
+              },
+              "filterable": false,
+              "inspect": false
+            },
+            "mappings": [],
+            "thresholds": {
+              "mode": "absolute",
+              "steps": [
+                {
+                  "color": "semi-dark-red",
+                  "value": null
+                }
+              ]
+            }
+          },
+          "overrides": [
+            {
+              "matcher": {
+                "id": "byName",
+                "options": "Destination Cluster"
+              },
+              "properties": [
+                {
+                  "id": "custom.width",
+                  "value": 192
+                }
+              ]
+            }
+          ]
+        },
+        "gridPos": {
+          "h": 14,
+          "w": 12,
+          "x": 12,
+          "y": 16
+        },
+        "id": 219,
+        "options": {
+          "cellHeight": "sm",
+          "footer": {
+            "countRows": false,
+            "enablePagination": false,
+            "fields": "",
+            "reducer": [
+              "sum"
+            ],
+            "show": false
+          },
+          "frameIndex": 0,
+          "showHeader": true,
+          "sortBy": []
+        },
+        "pluginVersion": "11.5.2",
+        "targets": [
+          {
+            "datasource": "$datasource",
+            "editorMode": "code",
+            "exemplar": false,
+            "expr": "count(argocd_application_long_running_sync{application=~\".*$application.*\", project=~\".*$project.*\"}) by (application, cluster, project, phase, sync_status, health_status)",
+            "format": "table",
+            "instant": true,
+            "legendFormat": "__auto",
+            "range": false,
+            "refId": "A"
+          }
+        ],
+        "title": "Long Running Deployments",
+        "transformations": [
+          {
+            "id": "merge",
+            "options": {}
+          },
+          {
+            "id": "filterFieldsByName",
+            "options": {
+              "byVariable": false,
+              "include": {
+                "pattern": ""
+              }
+            }
+          },
+          {
+            "id": "organize",
+            "options": {
+              "excludeByName": {
+                "Time": true,
+                "Value": true,
+                "cluster": false
+              },
+              "includeByName": {},
+              "indexByName": {
+                "Time": 0,
+                "Value": 7,
+                "application": 1,
+                "cluster": 2,
+                "health_status": 6,
+                "phase": 4,
+                "project": 3,
+                "sync_status": 5
+              },
+              "renameByName": {
+                "Time": "",
+                "Value": "",
+                "application": "Application",
+                "cluster": "Destination Cluster",
+                "dest_cluster": "Cluster Name",
+                "health_status": "Health Status",
+                "namespace": "Argo CD instance",
+                "phase": "Sync Phase",
+                "project": "AppProject",
+                "sync_status": "Sync Status"
+              }
+            }
+          }
+        ],
+        "type": "table"
+      }
+    ],
+    "preload": false,
+    "refresh": "",
+    "schemaVersion": 40,
+    "tags": [],
+    "templating": {
+      "list": [
+        {
+          "current": {
+            "text": "Prometheus",
+            "value": "prometheus"
+          },
+          "hide": 2,
+          "includeAll": false,
+          "name": "datasource",
+          "options": [],
+          "query": "prometheus",
+          "refresh": 1,
+          "regex": "",
+          "type": "datasource"
+        },
+        {
+          "current": {
+            "text": "All",
+            "value": "$__all"
+          },
+          "datasource": "$datasource",
+          "definition": "label_values(argocd_app_info:detailed,application)",
+          "includeAll": true,
+          "label": "Application",
+          "name": "application",
+          "options": [],
+          "query": {
+            "query": "label_values(argocd_app_info:detailed,application)",
+            "refId": "PrometheusVariableQueryEditor-VariableQuery"
+          },
+          "refresh": 1,
+          "regex": "",
+          "sort": 1,
+          "type": "query"
+        },
+        {
+          "current": {
+            "text": "default",
+            "value": "default"
+          },
+          "datasource": "$datasource",
+          "definition": "label_values(argocd_app_info,project)",
+          "includeAll": true,
+          "label": "AppProject",
+          "name": "project",
+          "options": [],
+          "query": {
+            "qryType": 1,
+            "query": "label_values(argocd_app_info,project)",
+            "refId": "PrometheusVariableQueryEditor-VariableQuery"
+          },
+          "refresh": 1,
+          "regex": "",
+          "sort": 1,
+          "type": "query"
+        }
+      ]
+    },
+    "time": {
+      "from": "now-1h",
+      "to": "now"
+    },
+    "timepicker": {},
+    "timezone": "",
+    "title": "Argo CD Application Status",
+    "uid": "argocd-application-status",
+    "version": 1,
+    "weekStart": ""
+  }
