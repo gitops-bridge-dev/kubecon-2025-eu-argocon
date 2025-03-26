@@ -1,0 +1,3 @@
+deployment:
+  name: gratification
+  image: nginx:fubar
