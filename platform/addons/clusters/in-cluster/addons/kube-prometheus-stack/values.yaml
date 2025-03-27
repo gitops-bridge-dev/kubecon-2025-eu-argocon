@@ -53,6 +53,7 @@ kubeStateMetrics:
 kube-state-metrics:
   prometheus:
     monitor:
+      # NOTE:This is so short for demo purposes only
       interval: 15s
   rbac:
     extraRules:
@@ -149,6 +150,10 @@ kube-state-metrics:
                         - '0'
                       kind:
                         - kind
+                      schedule:
+                        - schedule
+                      duration:
+                        - duration
                     path:
                       - spec
                       - syncWindows
@@ -166,6 +171,10 @@ kube-state-metrics:
                         - '1'
                       kind:
                         - kind
+                      schedule:
+                        - schedule
+                      duration:
+                        - duration
                     path:
                       - spec
                       - syncWindows
@@ -183,6 +192,10 @@ kube-state-metrics:
                         - '2'
                       kind:
                         - kind
+                      schedule:
+                        - schedule
+                      duration:
+                        - duration
                     path:
                       - spec
                       - syncWindows
@@ -200,6 +213,10 @@ kube-state-metrics:
                         - '3'
                       kind:
                         - kind
+                      schedule:
+                        - schedule
+                      duration:
+                        - duration
                     path:
                       - spec
                       - syncWindows
@@ -217,6 +234,10 @@ kube-state-metrics:
                         - '4'
                       kind:
                         - kind
+                      schedule:
+                        - schedule
+                      duration:
+                        - duration
                     path:
                       - spec
                       - syncWindows
@@ -234,12 +255,100 @@ kube-state-metrics:
                         - '5'
                       kind:
                         - kind
+                      schedule:
+                        - schedule
+                      duration:
+                        - duration
                     path:
                       - spec
                       - syncWindows
                   type: Info
                 help: Argo CD syncWindows
                 name: sync_windows_raw_5
+              - each:
+                  info:
+                    labelsFromPath:
+                      cluster_name_raw:
+                        - clusters
+                        - '6'
+                      application_name_raw:
+                        - applications
+                        - '6'
+                      kind:
+                        - kind
+                      schedule:
+                        - schedule
+                      duration:
+                        - duration
+                    path:
+                      - spec
+                      - syncWindows
+                  type: Info
+                help: Argo CD syncWindows
+                name: sync_windows_raw_6
+              - each:
+                  info:
+                    labelsFromPath:
+                      cluster_name_raw:
+                        - clusters
+                        - '7'
+                      application_name_raw:
+                        - applications
+                        - '7'
+                      kind:
+                        - kind
+                      schedule:
+                        - schedule
+                      duration:
+                        - duration
+                    path:
+                      - spec
+                      - syncWindows
+                  type: Info
+                help: Argo CD syncWindows
+                name: sync_windows_raw_7
+              - each:
+                  info:
+                    labelsFromPath:
+                      cluster_name_raw:
+                        - clusters
+                        - '8'
+                      application_name_raw:
+                        - applications
+                        - '8'
+                      kind:
+                        - kind
+                      schedule:
+                        - schedule
+                      duration:
+                        - duration
+                    path:
+                      - spec
+                      - syncWindows
+                  type: Info
+                help: Argo CD syncWindows
+                name: sync_windows_raw_8
+              - each:
+                  info:
+                    labelsFromPath:
+                      cluster_name_raw:
+                        - clusters
+                        - '9'
+                      application_name_raw:
+                        - applications
+                        - '9'
+                      kind:
+                        - kind
+                      schedule:
+                        - schedule
+                      duration:
+                        - duration
+                    path:
+                      - spec
+                      - syncWindows
+                  type: Info
+                help: Argo CD syncWindows
+                name: sync_windows_raw_9
 
 extraManifests:
 - apiVersion: monitoring.coreos.com/v1
@@ -251,6 +360,7 @@ extraManifests:
   spec:
     groups:
     - name: argocd-application-health-recording.rules
+      interval: 15s
       rules:
       - expr: max(label_replace(label_replace(argocd_appproject_sync_windows_raw_0{application_name_raw!~"list index out of range.*", application_name_raw!=""}, "application", "$1", "application_name_raw", "[\\*]?([a-zA-Z0-9-_]*)[\\*]?"), "project", "$1", "name", "(.*)")) without (cluster_name_raw)
         record: argocd_appproject_sync_windows
@@ -294,10 +404,18 @@ extraManifests:
         record: argocd_appproject_sync_windows
       - expr: count(label_replace(label_replace(argocd_app_info, "cluster", "$1", "dest_server", "(.*)"), "application", "$1", "name", "(.*)")) without (pod, container, endpoint, instance, job, service) * on (name, namespace) group_left (phase) argocd_application_sync_phase
         record: argocd_app_info:detailed
-      # In reality, we should use at least 3600 seconds as the timeout, but we use 180 seconds for the sake of the demo
-      - expr: sum(((argocd_application_sync_start_time unless argocd_application_sync_end_time) and ((argocd_application_sync_start_time + 180) <= time())) * on(name) group_right(customresource_group, customresource_kind, customresource_version) (argocd_app_info:detailed)) without (pod, container, prometheus, prometheus_cluster, prometheus_replica, service, instance, job, endpoint, customresource_group, customresource_kind, customresource_version) unless on(cluster) argocd_appproject_sync_windows{kind="deny"} unless on(application) argocd_appproject_sync_windows{kind="deny"}
+      - expr: argocd_appproject_sync_windows{kind="deny", schedule="* * * * *"}
+        record: argocd_appproject_sync_windows:deny
+        labels:
+          type: always
+      - expr: argocd_appproject_sync_windows{kind="deny", schedule!="* * * * *"}
+        record: argocd_appproject_sync_windows:deny
+        labels:
+          type: scheduled
+      # In reality, we should use at least 3600 seconds (1 hour) as the timeout, but we use 180 seconds for the sake of the demo
+      - expr: sum(((argocd_application_sync_start_time unless argocd_application_sync_end_time) and ((argocd_application_sync_start_time + 180) <= time())) * on(name) group_right(customresource_group, customresource_kind, customresource_version) (argocd_app_info:detailed)) without (pod, container, prometheus, prometheus_cluster, prometheus_replica, service, instance, job, endpoint, customresource_group, customresource_kind, customresource_version) unless on(cluster) argocd_appproject_sync_windows:deny{type="always"} unless on(application) argocd_appproject_sync_windows:deny{type="always"}
         record: argocd_application_long_running_sync
-      - expr: ((count(argocd_app_info:detailed{health_status!~"Healthy|Progressing"}) by (name, project, application, cluster, sync_status, health_status, phase, autosync_enabled, dest_namespace, environment, dest_server) or count(argocd_app_info:detailed{sync_status!="Synced"}) by (name, project, application, cluster, sync_status, health_status, phase, autosync_enabled, dest_namespace, environment, dest_server))) unless on(cluster) argocd_appproject_sync_windows{kind="deny"} unless on(application) argocd_appproject_sync_windows{kind="deny"}
+      - expr: ((count(argocd_app_info:detailed{health_status!~"Healthy|Progressing"}) by (name, project, application, cluster, sync_status, health_status, phase, autosync_enabled, dest_namespace, environment, dest_server) or count(argocd_app_info:detailed{sync_status!="Synced"}) by (name, project, application, cluster, sync_status, health_status, phase, autosync_enabled, dest_namespace, environment, dest_server))) unless on(cluster) argocd_appproject_sync_windows:deny{type="always"} unless on(application) argocd_appproject_sync_windows:deny{type="always"}
         record: argocd_application_out_of_sync
 - apiVersion: monitoring.coreos.com/v1
   kind: ServiceMonitor

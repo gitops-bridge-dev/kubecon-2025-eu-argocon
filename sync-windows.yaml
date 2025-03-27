@@ -21,14 +21,14 @@ spec:
     - touge-1
     - carlos-0
     - '*some-random-cluster*'
-    duration: 12345s
+    duration: 1234.5s
     kind: deny
     manualSync: true
     schedule: '* * * * *'
     timeZone: UTC
   - clusters:
     - kubecon-cluster
-    duration: 98765s
+    duration: 987.65s
     kind: deny
     schedule: '* * * * *'
     timeZone: UTC
@@ -39,12 +39,17 @@ spec:
     - gratification-cluster-3
     - atascado-cluster-1
     - fuera-de-onda-cluster-0
-    clusters:
-    - kubecon-cluster-1
-    - kubecon-cluster-2
-    - kubecon-cluster-3
-    duration: 12584s
+    duration: 1258.4s
     kind: deny
     manualSync: true
     schedule: '* * * * *'
+    timeZone: UTC
+  - clusters:
+    - kubecon-cluster-1
+    - kubecon-cluster-2
+    - kubecon-cluster-3
+    duration: 125853.84s
+    kind: deny
+    manualSync: true
+    schedule: '* 2 * * *'
     timeZone: UTC
