@@ -51,7 +51,9 @@ kubeStateMetrics:
   enabled: true
 
 kube-state-metrics:
-  rbac:
+  prometheus:
+    monitor:
+      interval: 15s
     extraRules:
     - apiGroups:
       - argoproj.io

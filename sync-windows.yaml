@@ -1,0 +1,50 @@
+# this to apply a sync window to problematic apps we want to show in demo that have problems
+apiVersion: argoproj.io/v1alpha1
+kind: AppProject
+metadata:
+  name: default
+  namespace: argocd
+spec:
+  clusterResourceWhitelist:
+  - group: '*'
+    kind: '*'
+  destinations:
+  - namespace: '*'
+    server: '*'
+  sourceRepos:
+  - '*'
+  syncWindows:
+  - applications:
+    - k8s-pvc-tagger
+    - something-on-touge-1
+    clusters:
+    - touge-1
+    - carlos-0
+    - '*some-random-cluster*'
+    duration: 12345s
+    kind: deny
+    manualSync: true
+    schedule: '* * * * *'
+    timeZone: UTC
+  - clusters:
+    - kubecon-cluster
+    duration: 98765s
+    kind: deny
+    schedule: '* * * * *'
+    timeZone: UTC
+  - applications:
+    - gratification-cluster-0
+    - gratification-cluster-1
+    - gratification-cluster-2
+    - gratification-cluster-3
+    - atascado-cluster-1
+    - fuera-de-onda-cluster-0
+    clusters:
+    - kubecon-cluster-1
+    - kubecon-cluster-2
+    - kubecon-cluster-3
+    duration: 12345s
+    kind: deny
+    manualSync: true
+    schedule: '* * * * *'
+    timeZone: UTC
