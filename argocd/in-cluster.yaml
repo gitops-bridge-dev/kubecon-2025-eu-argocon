@@ -19,37 +19,3 @@ stringData:
         "insecure": false
       }
     }
----
-apiVersion: argoproj.io/v1alpha1
-kind: AppProject
-metadata:
-  name: default
-  namespace: argocd
-spec:
-  clusterResourceWhitelist:
-  - group: '*'
-    kind: '*'
-  destinations:
-  - namespace: '*'
-    server: '*'
-  sourceRepos:
-  - '*'
-  syncWindows:
-  - applications:
-    - k8s-pvc-tagger
-    - something-on-touge-1
-    clusters:
-    - touge-1
-    - carlos-0
-    - '*some-random-cluster*'
-    duration: 12345s
-    kind: deny
-    manualSync: true
-    schedule: '* * * * *'
-    timeZone: UTC
-  - clusters:
-    - kubecon-cluster
-    duration: 98765s
-    kind: deny
-    schedule: '* * * * *'
-    timeZone: UTC

@@ -26,3 +26,4 @@ spec:
       - $values/addons/clusters/fleet/metrics-server.yaml
       - $values/addons/clusters/fleet/atascado.yaml
       - $values/addons/clusters/fleet/fuera-de-onda.yaml
+      - $values/addons/clusters/fleet/gratification.yaml

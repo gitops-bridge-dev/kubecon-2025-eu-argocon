@@ -1,0 +1,7 @@
+gratification:
+  enabled: true
+  releaseName: gratification
+  namespace: gratification
+  path: addons/charts/addon-gratification
+  annotationsApp:
+    argocd.argoproj.io/compare-options: ServerSideDiff=true
