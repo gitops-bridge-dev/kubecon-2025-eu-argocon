@@ -54,6 +54,7 @@ kube-state-metrics:
   prometheus:
     monitor:
       interval: 15s
+  rbac:
     extraRules:
     - apiGroups:
       - argoproj.io

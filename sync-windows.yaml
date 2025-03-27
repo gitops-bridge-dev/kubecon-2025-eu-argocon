@@ -43,7 +43,7 @@ spec:
     - kubecon-cluster-1
     - kubecon-cluster-2
     - kubecon-cluster-3
-    duration: 12345s
+    duration: 12584s
     kind: deny
     manualSync: true
     schedule: '* * * * *'
