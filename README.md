@@ -48,3 +48,15 @@ kind delete cluster --name localdev
 ```
 
 
+## Appendix
+You can use idpbuilder to extract secrets
+
+For example for grafana, label the secret
+```shell
+kubeclt label secret -n monitoring kube-prometheus-stack-grafana "cnoe.io/cli-secret=true"
+```
+Extract with idpbuilder
+```shell
+idpbuilder get secrets -o json | jq -r '.[] | select(.name == "kube-prometheus-stack-grafana") .data."admin-user"'
+idpbuilder get secrets -o json | jq -r '.[] | select(.name == "kube-prometheus-stack-grafana") .data."admin-password"'
+```
