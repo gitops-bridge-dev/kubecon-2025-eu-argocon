@@ -29,5 +29,9 @@ cert_manager:
       environment: production
       maintenanceGroup: b
     chartVersion: "v1.17.1"
+  - selector:
+      environment: production
+      maintenanceGroup: c
+    chartVersion: "v1.17.1"
 
 
