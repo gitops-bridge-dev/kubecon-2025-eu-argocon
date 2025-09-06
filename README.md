@@ -53,7 +53,7 @@ You can use idpbuilder to extract secrets
 
 For example for grafana, label the secret
 ```shell
-kubeclt label secret -n monitoring kube-prometheus-stack-grafana "cnoe.io/cli-secret=true"
+kubectl label secret -n monitoring kube-prometheus-stack-grafana "cnoe.io/cli-secret=true"
 ```
 Extract with idpbuilder
 ```shell
