@@ -12,26 +12,22 @@ cert_manager:
   - selector:
       environment: staging
       maintenanceGroup: a
-    chartVersion: "v1.16.4"
+    chartVersion: "v1.17.1"
   - selector:
       environment: staging
       maintenanceGroup: b
-    chartVersion: "v1.16.3"
+    chartVersion: "v1.17.1"
   - selector:
       environment: production
       maintenanceGroup: canary
-    chartVersion: "v1.17.1"
+    chartVersion: "v1.15.5"
   - selector:
       environment: production
       maintenanceGroup: a
-    chartVersion: "v1.17.1"
+    chartVersion: "v1.15.4"
   - selector:
       environment: production
       maintenanceGroup: b
-    chartVersion: "v1.17.1"
-  - selector:
-      environment: production
-      maintenanceGroup: c
-    chartVersion: "v1.17.1"
+    chartVersion: "v1.15.3"
 
 
