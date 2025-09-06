@@ -16,22 +16,22 @@ possibleValues:
 
   regions:
     - us-east-1
-    - us-west-2
-    - eu-west-2
+#    - us-west-2
+#    - eu-west-2
 
   environments:
-    - ci
+#    - ci
     - staging
     - production
 
   versions:
     - "v1.32.0"
-    - "v1.31.6"
+ #   - "v1.31.6"
 
   organizations:
     - team-1
     - team-2
-    - team-3
+  #  - team-3
 
 
 extraLabels:

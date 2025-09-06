@@ -74,3 +74,7 @@ pushd $tempdir
 sudo make install
 popd
 
+#Install Amazon Q
+curl --proto '=https' --tlsv1.2 -sSf "https://desktop-release.q.us-east-1.amazonaws.com/latest/q-x86_64-linux.zip" -o "/tmp/q.zip"
+unzip /tmp/q.zip -d /tmp
+/tmp/q/install.sh --no-confirm
