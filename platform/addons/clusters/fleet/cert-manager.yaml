@@ -20,7 +20,7 @@ cert_manager:
   - selector:
       environment: production
       maintenanceGroup: canary
-    chartVersion: "v1.15.5"
+    chartVersion: "v1.17.1"
   - selector:
       environment: production
       maintenanceGroup: a
