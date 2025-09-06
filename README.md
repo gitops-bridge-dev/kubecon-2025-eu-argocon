@@ -1,4 +1,4 @@
-# ArgoCon EU 2025 Demo Multi-Cluster at Scale
+# Demo Multi-Cluster Upgrades at Scale
 
 # Setup:
 - Install idpbuilder cli https://github.com/cnoe-io/idpbuilder
