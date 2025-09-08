@@ -107,3 +107,8 @@ kubectl get deployment cert-manager -n cert-manager -o jsonpath='{.spec.template
 - **ArgoCD**: https://cnoe.localtest.me:8443/argocd
 - **Gitea**: https://cnoe.localtest.me:8443/gitea
 - **Grafana**: https://cnoe.localtest.me:8443/grafana
+
+To open the web browser on a given url use the following command example:
+```
+python3 -m webbrowser <URL>
+```
