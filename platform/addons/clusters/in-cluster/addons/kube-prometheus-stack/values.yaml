@@ -10,6 +10,15 @@ grafana:
     server:
       root_url: https://cnoe.localtest.me:8443/grafana
       serve_from_sub_path: true
+    users:
+      home_page: "/dashboards"
+    auth:
+      disable_login: "true"
+      disable_login_form: "true"
+    auth.anonymous:
+      enabled: "true"
+      # specify role for unauthenticated users, This is Admin only for EKS Fleet Workshop do not setup like this in production
+      org_role: "Admin"
   dashboardProviders:
     dashboardproviders.yaml:
       apiVersion: 1
